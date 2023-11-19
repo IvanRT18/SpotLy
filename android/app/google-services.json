@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "537075220409",
+    "project_id": "proyecto-movil-e9cca",
+    "storage_bucket": "proyecto-movil-e9cca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537075220409:android:c92fa494a06bc9ac3d8068",
+        "android_client_info": {
+          "package_name": "com.example.proyecto_movil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfYUgq18QMtyJEr3srvtNiN_F7Md4pclA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
