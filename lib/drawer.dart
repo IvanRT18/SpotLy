@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/ajustes.dart';
+import 'package:proyecto_movil/bookmarks.dart';
 import 'package:proyecto_movil/home.dart';
 import 'package:proyecto_movil/login.dart';
 import 'package:proyecto_movil/mapa.dart';
@@ -80,6 +81,19 @@ class _DrawerAppState extends State<DrawerApp> {
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const Mapa(),
+                    ));
+                  },
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                ListTile(
+                  leading: Icon(Icons.bookmark, size: listIconSize),
+                  iconColor: Colors.white,
+                  title: Text('Mis Lugares', style: listItemStyle),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Bookmark(),
                     ));
                   },
                 ),
