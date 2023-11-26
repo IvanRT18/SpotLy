@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:proyecto_movil/drawer.dart';
+import 'package:proyecto_movil/firebase_funciones.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
 
 class Bookmark extends StatefulWidget {
@@ -12,6 +14,10 @@ class Bookmark extends StatefulWidget {
 class _BookmarkState extends State<Bookmark> {
   @override
   Widget build(BuildContext context) {
+    final double widthDevice = MediaQuery.of(context).size.width;
+    final double heightDevice = MediaQuery.of(context).size.height;
+    double appbarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -42,75 +48,105 @@ class _BookmarkState extends State<Bookmark> {
         ],
       ),
       drawer: DrawerApp(),
-      body: Stack(
+      body: Column(
         children: [
-          ListView.builder(
-            itemCount: 5,
-            padding: EdgeInsets.all(10),
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.only(bottom: 20),
-                width: 300,
-                height: 90,
-                padding: const EdgeInsets.only(
-                  top: 10,
-                  left: 5,
-                  right: 10,
-                  bottom: 10,
-                ),
-                decoration: ShapeDecoration(
-                  color: rojoApp,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 280,
-                      height: 80,
-                      padding: const EdgeInsets.only(left: 5, right: 10),
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
+          Expanded(
+            child: FutureBuilder(
+              future: getLugares(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        color: rojoApp,
+                        margin:
+                            EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                        elevation: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          snapshot.data?[index]['nombre_lugar'],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          snapshot.data?[index]['descripcion'],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Estrellas",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          FontAwesomeIcons.ellipsisVertical,
+                                          size: 30,
+                                          color: Colors.white,
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      child: const Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Título',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontFamily: 'Questrial',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Descripción',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'Questrial',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
+                      );
+                      ;
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
           ),
         ],
       ),

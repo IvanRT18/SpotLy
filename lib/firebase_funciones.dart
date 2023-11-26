@@ -14,3 +14,17 @@ Future<List> getUsuarios() async {
 
   return usuarios;
 }
+
+Future<List> getLugares() async {
+  List localizaciones = [];
+  CollectionReference collectionReferenceUsuarios =
+      db.collection('Localizacion');
+
+  QuerySnapshot queryLocalizaciones = await collectionReferenceUsuarios.get();
+
+  queryLocalizaciones.docs.forEach((location) {
+    localizaciones.add(location.data());
+  });
+
+  return localizaciones;
+}

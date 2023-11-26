@@ -52,32 +52,40 @@ class _AjustesState extends State<Ajustes> {
         height: heightDevice,
         child: Column(
           children: [
-            // Container(
-            //   color: Colors.red,
-            //   child: ElevatedButton(
-            //     onPressed: () {},
-            //     child: Text("Obtener usuarios"),
-            //   ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     setState(() {});
+            //   },
+            //   child: Text("Obtener usuarios"),
             // ),
-            // Column(
-            //   children: [
-            //     FutureBuilder(
-            //       future: getUsuarios(),
-            //       builder: (context, snapshot) {
-            //         if (snapshot.hasData) {
-            //           return ListView.builder(
-            //             itemCount: snapshot.data?.length,
-            //             itemBuilder: (BuildContext context, int index) {
-            //               return Text(snapshot.data?[index]['usuario']);
-            //             },
-            //           );
-            //         } else {
-            //           return CircularProgressIndicator();
-            //         }
-            //       },
-            //     ),
-            //   ],
-            // ),
+            Expanded(
+              child: FutureBuilder(
+                future: getUsuarios(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          child: Column(
+                            children: [
+                              // Text(snapshot.data?[index]['id_usuario']),
+                              Text(snapshot.data?[index]['usuario']),
+                              Text(snapshot.data?[index]['correo']),
+                              Text(snapshot.data?[index]['password']),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),
