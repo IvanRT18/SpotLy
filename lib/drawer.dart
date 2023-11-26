@@ -67,23 +67,23 @@ class _DrawerAppState extends State<DrawerApp> {
                   ),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Home(),
-                    ));
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                ListTile(
-                  leading: Icon(Icons.location_on_rounded, size: listIconSize),
-                  iconColor: Colors.white,
-                  title: Text('Mapa', style: listItemStyle),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const Mapa(),
                     ));
                   },
                 ),
+                // const SizedBox(
+                //   height: 30,
+                // ),
+                // ListTile(
+                //   leading: Icon(Icons.location_on_rounded, size: listIconSize),
+                //   iconColor: Colors.white,
+                //   title: Text('Mapa', style: listItemStyle),
+                //   onTap: () {
+                //     Navigator.of(context).push(MaterialPageRoute(
+                //       builder: (context) => const Mapa(),
+                //     ));
+                //   },
+                // ),
                 const SizedBox(
                   height: 30,
                 ),

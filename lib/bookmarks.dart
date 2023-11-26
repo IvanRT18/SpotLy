@@ -46,26 +46,66 @@ class _BookmarkState extends State<Bookmark> {
         children: [
           ListView.builder(
             itemCount: 5,
+            padding: EdgeInsets.all(10),
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 3),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
+                margin: EdgeInsets.only(bottom: 20),
+                width: 300,
+                height: 90,
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 5,
+                  right: 10,
+                  bottom: 10,
+                ),
+                decoration: ShapeDecoration(
+                  color: Color(0xFF008080),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-                child: Column(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Nombre lugar #${index + 1}",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      "Comentario",
-                      style: TextStyle(fontSize: 15),
+                    Container(
+                      width: 280,
+                      height: 80,
+                      padding: const EdgeInsets.only(left: 5, right: 10),
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      child: const Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Título',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontFamily: 'Questrial',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            'Descripción',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontFamily: 'Questrial',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

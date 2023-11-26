@@ -45,7 +45,7 @@ class _MapaState extends State<Mapa> {
           Padding(
             padding: EdgeInsets.only(right: 30),
             child: Text(
-              "Mapa",
+              "SpotLy",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 36,
