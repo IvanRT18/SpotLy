@@ -21,7 +21,7 @@ class _BookmarkState extends State<Bookmark> {
               onPressed: () => Scaffold.of(context).openDrawer(),
               icon: Icon(
                 Icons.menu,
-                color: verdeApp,
+                color: rojoApp,
                 size: 45,
               ),
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
@@ -59,7 +59,7 @@ class _BookmarkState extends State<Bookmark> {
                   bottom: 10,
                 ),
                 decoration: ShapeDecoration(
-                  color: Color(0xFF008080),
+                  color: rojoApp,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),

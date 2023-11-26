@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:proyecto_movil/home.dart';
 import 'package:proyecto_movil/mapa.dart';
+import 'package:proyecto_movil/utils/constantes.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -149,16 +151,15 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const Home(),
+                                    builder: (context) => const Mapa(),
                                   ));
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 0, 128, 128),
+                              backgroundColor: rojoApp,
                               shape: const RoundedRectangleBorder(
                                 side: BorderSide(
                                   width: 2,
-                                  color: Color(0x8C848480),
+                                  color: rojoApp,
                                 ),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),

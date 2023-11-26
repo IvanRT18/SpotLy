@@ -27,7 +27,7 @@ class _DrawerAppState extends State<DrawerApp> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: verdeApp,
+      backgroundColor: rojoApp,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(25),

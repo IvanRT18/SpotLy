@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
               onPressed: () => Scaffold.of(context).openDrawer(),
               icon: Icon(
                 Icons.menu,
-                color: verdeApp,
+                color: rojoApp,
                 size: 45,
               ),
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
