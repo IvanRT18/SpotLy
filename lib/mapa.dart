@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:proyecto_movil/drawer.dart';
 import 'package:proyecto_movil/ubicacion.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
+import 'package:toastification/toastification.dart';
 
 class Mapa extends StatefulWidget {
   const Mapa({super.key});
@@ -56,7 +57,7 @@ class _MapaState extends State<Mapa> {
 
     TextEditingController nombre = TextEditingController();
     TextEditingController descripcion = TextEditingController();
-    // TextEditingController calificacion = TextEditingController();
+    late double calificacion;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -92,11 +93,10 @@ class _MapaState extends State<Mapa> {
           height: heightDevice - appbarHeight,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: widthDevice * 7,
                 height: heightDevice * 0.8,
                 child: GoogleMap(
-                  //creadpr del mapa
                   onMapCreated: _onMapCreated,
                   myLocationButtonEnabled: true,
                   myLocationEnabled: true,
@@ -107,154 +107,216 @@ class _MapaState extends State<Mapa> {
                   ),
                   markers: {
                     Marker(
-                      markerId: MarkerId("Posicion"),
+                      markerId: const MarkerId("Posicion"),
                       position: _center,
                     ),
                   },
                 ),
               ),
               Expanded(
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                        ),
-                        onPressed: () {
-                          getCurretLocation().then((value) {
-                            nuevaUbicacion.latitud = value.latitude;
-                            nuevaUbicacion.longitud = value.longitude;
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                      ),
+                      onPressed: () {
+                        getCurretLocation().then(
+                          (localizacionActual) {
+                            nuevaUbicacion.latitud =
+                                localizacionActual.latitude;
+                            nuevaUbicacion.longitud =
+                                localizacionActual.longitude;
 
                             showDialog<String>(
                               context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text("Agregar ubicación"),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Text(
-                                      'Escribe la información de la nueva ubicación',
-                                      style: TextStyle(
-                                          fontSize: 17, color: Colors.black),
-                                    ),
-                                    TextFormField(
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500),
-                                      controller: nombre,
-                                      obscureText: false,
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            borderSide: BorderSide.none),
-                                        filled: true,
-                                        fillColor: rojoApp,
-                                        hintText: "Nombre",
-                                        hintStyle: const TextStyle(
+                              builder: (context) => SingleChildScrollView(
+                                child: AlertDialog(
+                                  title: const Text("Agregar ubicación"),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text(
+                                        'Escribe la información de la nueva ubicación',
+                                        style: TextStyle(
+                                            fontSize: 17, color: Colors.black),
+                                      ),
+                                      TextFormField(
+                                        style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
                                             fontWeight: FontWeight.w500),
-                                        // errorText: _validateUser
-                                        //     ? "Debe de escribir un usuario"
-                                        //     : null,
-                                        // prefixIcon: const Icon(Icons.verified_user),
+                                        controller: nombre,
+                                        obscureText: false,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          filled: true,
+                                          fillColor: rojoApp,
+                                          hintText: "Nombre",
+                                          hintStyle: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                          // errorText: _validateUser
+                                          //     ? "Debe de escribir un usuario"
+                                          //     : null,
+                                          // prefixIcon: const Icon(Icons.verified_user),
+                                        ),
+                                        onChanged: (texto) {
+                                          setState(() {
+                                            if (texto.trim().isEmpty) {
+                                              // _validateUser = false;
+                                            }
+                                          });
+                                        },
                                       ),
-                                      onChanged: (texto) {
-                                        setState(() {
-                                          if (texto.trim().isEmpty) {
-                                            // _validateUser = false;
-                                          }
-                                        });
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    TextFormField(
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500),
-                                      controller: nombre,
-                                      obscureText: false,
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            borderSide: BorderSide.none),
-                                        filled: true,
-                                        fillColor: rojoApp,
-                                        hintText: "Descripcion",
-                                        hintStyle: const TextStyle(
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      TextFormField(
+                                        maxLines: 5,
+                                        style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
                                             fontWeight: FontWeight.w500),
-                                        // errorText: _validateUser
-                                        //     ? "Debe de escribir un usuario"
-                                        //     : null,
-                                        // prefixIcon: const Icon(Icons.verified_user),
+                                        controller: descripcion,
+                                        obscureText: false,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          filled: true,
+                                          fillColor: rojoApp,
+                                          hintText: "Descripcion",
+                                          hintStyle: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                          // errorText: _validateUser
+                                          //     ? "Debe de escribir un usuario"
+                                          //     : null,
+                                          // prefixIcon: const Icon(Icons.verified_user),
+                                        ),
+                                        onChanged: (texto) {
+                                          setState(() {
+                                            if (texto.trim().isEmpty) {
+                                              // _validateUser = false;
+                                            }
+                                          });
+                                        },
                                       ),
-                                      onChanged: (texto) {
-                                        setState(() {
-                                          if (texto.trim().isEmpty) {
-                                            // _validateUser = false;
-                                          }
-                                        });
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      RatingBar.builder(
+                                        initialRating: 3,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemPadding: const EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          print(rating);
+                                          calificacion = rating;
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, "Cancelar"),
+                                      child: const Text("Cancelar"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        nuevaUbicacion.descripcion =
+                                            descripcion.text;
+                                        nuevaUbicacion.nombreUbicacion =
+                                            nombre.text;
+                                        nuevaUbicacion.calificacion =
+                                            calificacion;
+                                        print('Nueva ubicacion valores:');
+                                        print(nuevaUbicacion.nombreUbicacion);
+                                        print(nuevaUbicacion.descripcion);
+                                        print(nuevaUbicacion.calificacion);
+                                        print(nuevaUbicacion.latitud);
+                                        print(nuevaUbicacion.longitud);
+
+                                        Navigator.pop(context, "Agregar");
+                                        toastification.show(
+                                          context: context,
+                                          type: ToastificationType.success,
+                                          style: ToastificationStyle.flat,
+                                          title: 'Ubicación guardada',
+                                          description:
+                                              'Se ha guardado en "Mis Lugares"',
+                                          alignment: Alignment.topLeft,
+                                          autoCloseDuration:
+                                              const Duration(seconds: 4),
+                                          animationBuilder: (
+                                            context,
+                                            animation,
+                                            alignment,
+                                            child,
+                                          ) {
+                                            return ScaleTransition(
+                                              scale: animation,
+                                              child: child,
+                                            );
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          boxShadow: lowModeShadow,
+                                          showProgressBar: true,
+                                          dragToClose: true,
+                                        );
                                       },
+                                      child: const Text("Agregar"),
                                     ),
                                   ],
                                 ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, "Cancelar"),
-                                    child: const Text("Cancelar"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, "Agregar"),
-                                    child: const Text("Agregar"),
-                                  ),
-                                ],
                               ),
                             );
-
-                            print('Nuevas coordenadas:');
-                            print(nuevaUbicacion.latitud);
-                            print(nuevaUbicacion.longitud);
-                          });
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.solidHeart,
-                              size: 35,
-                              color: verdeApp,
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              "Guardar ubicación",
-                              style: TextStyle(
-                                  color: verdeApp,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                          },
+                        );
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.solidHeart,
+                            size: 35,
+                            color: verdeApp,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Guardar ubicación",
+                            style: TextStyle(
+                                color: verdeApp,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
             ],
