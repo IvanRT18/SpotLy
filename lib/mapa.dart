@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,7 +20,8 @@ class Mapa extends StatefulWidget {
 class _MapaState extends State<Mapa> {
   late GoogleMapController mapController;
 
-  late LatLng _center = const LatLng(22.144695795592572, -101.0163329857406);
+  late final LatLng _center =
+      const LatLng(22.144695795592572, -101.0163329857406);
 
   late Ubicacion nuevaUbicacion = Ubicacion();
 

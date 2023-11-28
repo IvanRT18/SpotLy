@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
           builder: (BuildContext context) {
             return IconButton(
               onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 color: rojoApp,
                 size: 45,
@@ -29,8 +29,8 @@ class _HomeState extends State<Home> {
           },
         ),
       ),
-      drawer: DrawerApp(),
-      body: Stack(
+      drawer: const DrawerApp(),
+      body: const Stack(
         children: [
           Text("home"),
         ],

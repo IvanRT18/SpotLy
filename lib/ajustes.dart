@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/drawer.dart';
 import 'package:proyecto_movil/firebase_funciones.dart';
@@ -24,7 +26,7 @@ class _AjustesState extends State<Ajustes> {
           builder: (BuildContext context) {
             return IconButton(
               onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 color: rojoApp,
                 size: 45,
@@ -46,7 +48,7 @@ class _AjustesState extends State<Ajustes> {
           ),
         ],
       ),
-      drawer: DrawerApp(),
+      drawer: const DrawerApp(),
       body: SizedBox(
         width: widthDevice,
         height: heightDevice,
@@ -79,7 +81,7 @@ class _AjustesState extends State<Ajustes> {
                       },
                     );
                   } else {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }

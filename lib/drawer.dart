@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/ajustes.dart';
 import 'package:proyecto_movil/bookmarks.dart';
-import 'package:proyecto_movil/home.dart';
 import 'package:proyecto_movil/login.dart';
 import 'package:proyecto_movil/mapa.dart';
 import 'package:proyecto_movil/utils/constantes.dart';

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:proyecto_movil/drawer.dart';
@@ -25,7 +27,7 @@ class _BookmarkState extends State<Bookmark> {
           builder: (BuildContext context) {
             return IconButton(
               onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 color: rojoApp,
                 size: 45,
@@ -47,7 +49,7 @@ class _BookmarkState extends State<Bookmark> {
           ),
         ],
       ),
-      drawer: DrawerApp(),
+      drawer: const DrawerApp(),
       body: Column(
         children: [
           Expanded(
@@ -60,8 +62,8 @@ class _BookmarkState extends State<Bookmark> {
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
                         color: rojoApp,
-                        margin:
-                            EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                        margin: const EdgeInsets.only(
+                            bottom: 15, left: 15, right: 15),
                         elevation: 0,
                         child: Padding(
                           padding: const EdgeInsets.all(10),
@@ -76,7 +78,7 @@ class _BookmarkState extends State<Bookmark> {
                                       children: [
                                         Text(
                                           snapshot.data?[index]['nombre_lugar'],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 28,
                                             fontWeight: FontWeight.w400,
@@ -85,14 +87,14 @@ class _BookmarkState extends State<Bookmark> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Row(
                                       children: [
                                         Text(
                                           snapshot.data?[index]['descripcion'],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
                                             fontWeight: FontWeight.w400,
@@ -101,10 +103,10 @@ class _BookmarkState extends State<Bookmark> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
-                                    Row(
+                                    const Row(
                                       children: [
                                         Text(
                                           "Estrellas",
@@ -125,7 +127,7 @@ class _BookmarkState extends State<Bookmark> {
                                   children: [
                                     IconButton(
                                         onPressed: () {},
-                                        icon: Icon(
+                                        icon: const Icon(
                                           FontAwesomeIcons.ellipsisVertical,
                                           size: 30,
                                           color: Colors.white,
@@ -137,11 +139,10 @@ class _BookmarkState extends State<Bookmark> {
                           ),
                         ),
                       );
-                      ;
                     },
                   );
                 } else {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }

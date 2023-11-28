@@ -1,24 +1,26 @@
-// ignore_for_file: unused_local_variable
+import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
-import 'package:proyecto_movil/mapa.dart';
-import 'package:proyecto_movil/register.dart';
+import 'package:proyecto_movil/login.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   bool _validarCorreo = false;
   bool _validarContrasena = false;
+  bool _validarUsuario = false;
+
   bool _obscureText = true; // Estado del obscureText
 
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
+  final userController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +55,73 @@ class _LoginState extends State<Login> {
                         children: [
                           // Encabezado
                           const Text(
-                            "Ingresar",
+                            "Registrarse",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 36,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400),
+                          ),
+                          // Espaciado
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          // Usuario
+                          SizedBox(
+                            width: widthDevice * 0.85,
+                            child: TextFormField(
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 132, 132, 128),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                controller: mailController,
+                                textAlign: TextAlign.left,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                    borderSide: const BorderSide(
+                                      width: 2,
+                                      color: Color(0x8C848480),
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                    borderSide: const BorderSide(
+                                      width: 20,
+                                      color: Color(0x8C848480),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                    borderSide: const BorderSide(
+                                      width: 2,
+                                      color: Color(0x8C848480),
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  hintText: "Usuario",
+                                  hintStyle: const TextStyle(
+                                    color: Color.fromARGB(255, 132, 132, 128),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  errorText: _validarUsuario
+                                      ? 'Debe de escribir un nombre de usuario válido'
+                                      : null,
+                                ),
+                                onChanged: (texto) {
+                                  setState(() {
+                                    if (texto.trim().isNotEmpty) {
+                                      _validarUsuario = false;
+                                    }
+                                  });
+                                }),
                           ),
                           // Espaciado
                           const SizedBox(
@@ -233,7 +296,7 @@ class _LoginState extends State<Login> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const Mapa(),
+                                        builder: (context) => const Login(),
                                       ));
                                 }
                               });
@@ -252,7 +315,7 @@ class _LoginState extends State<Login> {
                               fixedSize: Size(widthDevice * 0.85, 0),
                             ),
                             child: const Text(
-                              "Iniciar sesión",
+                              "Registrarse",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -264,15 +327,15 @@ class _LoginState extends State<Login> {
                           ),
                           // Espaciado
                           const SizedBox(
-                            height: 80,
+                            height: 20,
                           ),
-                          // Registrarse
+                          // Iniciar sesión
                           SizedBox(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text(
-                                  'Eres nuevo? ',
+                                  'Ya tienes cuenta? ',
                                   style: TextStyle(fontSize: 16.0),
                                 ),
                                 GestureDetector(
@@ -280,12 +343,12 @@ class _LoginState extends State<Login> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => Register(),
+                                        builder: (context) => Login(),
                                       ),
                                     );
                                   },
                                   child: const Text(
-                                    'Crea una cuenta',
+                                    'Inicia sesión',
                                     style: TextStyle(
                                       fontSize: 16.0,
                                       color: Colors.blue,
