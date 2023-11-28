@@ -99,21 +99,39 @@ class _MapaState extends State<Mapa> {
               SizedBox(
                 width: widthDevice * 7,
                 height: heightDevice * 0.8,
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                  //Posicion inicial del mapa
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 14.5,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId("Posicion"),
-                      position: _center,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 16, 24, 10),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                        bottomLeft: Radius.circular(30),
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        heightFactor: heightDevice * 0.6,
+                        widthFactor: widthDevice * 0.7,
+                        child: GoogleMap(
+                          onMapCreated: _onMapCreated,
+                          myLocationButtonEnabled: true,
+                          myLocationEnabled: true,
+                          //Posicion inicial del mapa
+                          initialCameraPosition: CameraPosition(
+                            target: _center,
+                            zoom: 14.5,
+                          ),
+                          markers: {
+                            Marker(
+                              markerId: const MarkerId("Posicion"),
+                              position: _center,
+                            ),
+                          },
+                        ),
+                      ),
                     ),
-                  },
+                  ),
                 ),
               ),
               Expanded(
@@ -304,7 +322,7 @@ class _MapaState extends State<Mapa> {
                           Icon(
                             FontAwesomeIcons.solidHeart,
                             size: 35,
-                            color: verdeApp,
+                            color: rojoApp,
                           ),
                           SizedBox(
                             width: 20,
@@ -312,7 +330,7 @@ class _MapaState extends State<Mapa> {
                           Text(
                             "Guardar ubicación",
                             style: TextStyle(
-                                color: verdeApp,
+                                color: rojoApp,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600),
                           ),
