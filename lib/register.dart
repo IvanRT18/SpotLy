@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
+
 import 'package:proyecto_movil/login.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
 
@@ -75,7 +76,7 @@ class _RegisterState extends State<Register> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                controller: mailController,
+                                controller: userController,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
@@ -292,7 +293,13 @@ class _RegisterState extends State<Register> {
                                         ? false
                                         : true;
 
-                                if (!_validarCorreo && !_validarContrasena) {
+                                _validarUsuario = userController.text.isNotEmpty
+                                    ? false
+                                    : true;
+
+                                if (!_validarCorreo &&
+                                    !_validarContrasena &&
+                                    !_validarUsuario) {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -343,7 +350,7 @@ class _RegisterState extends State<Register> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => Login(),
+                                        builder: (context) => const Login(),
                                       ),
                                     );
                                   },
