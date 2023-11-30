@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:proyecto_movil/drawer.dart';
+import 'package:proyecto_movil/firebase_funciones.dart';
 import 'package:proyecto_movil/ubicacion.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
 import 'package:toastification/toastification.dart';
@@ -60,7 +61,7 @@ class _MapaState extends State<Mapa> {
 
     TextEditingController nombre = TextEditingController();
     TextEditingController descripcion = TextEditingController();
-    late double calificacion;
+    late double calificacion = 3;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -265,7 +266,7 @@ class _MapaState extends State<Mapa> {
                                       child: const Text("Cancelar"),
                                     ),
                                     TextButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         nuevaUbicacion.descripcion =
                                             descripcion.text;
                                         nuevaUbicacion.nombreUbicacion =
@@ -278,6 +279,8 @@ class _MapaState extends State<Mapa> {
                                         print(nuevaUbicacion.calificacion);
                                         print(nuevaUbicacion.latitud);
                                         print(nuevaUbicacion.longitud);
+
+                                        await addLugar(nuevaUbicacion);
 
                                         Navigator.pop(context, "Agregar");
                                         toastification.show(

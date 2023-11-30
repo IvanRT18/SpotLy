@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:proyecto_movil/ubicacion.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
+//Obtiene todos los usuarios de la base de datos
 Future<List> getUsuarios() async {
   List usuarios = [];
   CollectionReference collectionReferenceUsuarios = db.collection('Usuario');
@@ -15,6 +19,7 @@ Future<List> getUsuarios() async {
   return usuarios;
 }
 
+//Obtiene todos los lugares de la base de datos
 Future<List> getLugares() async {
   List localizaciones = [];
   CollectionReference collectionReferenceUsuarios =
@@ -27,4 +32,15 @@ Future<List> getLugares() async {
   });
 
   return localizaciones;
+}
+
+//Agrega un nuevo lugar a la base de datos
+Future<void> addLugar(Ubicacion localizacion) async {
+  await db.collection('Localizacion').add({
+    'nombre_lugar': localizacion.nombreUbicacion,
+    'descripcion': localizacion.descripcion,
+    'calificacion': localizacion.calificacion,
+    'latitud': localizacion.latitud,
+    'lonigitud': localizacion.longitud,
+  });
 }
