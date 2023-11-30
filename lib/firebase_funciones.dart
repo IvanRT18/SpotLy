@@ -1,7 +1,5 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:proyecto_movil/ubicacion.dart';
+import 'package:proyecto_movil/models/ubicacion.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 

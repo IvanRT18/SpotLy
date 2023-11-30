@@ -1,7 +1,10 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:proyecto_movil/firebase_authentication.dart';
 import 'package:proyecto_movil/mapa.dart';
+import 'package:proyecto_movil/models/usuario.dart';
 import 'package:proyecto_movil/register.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
 
@@ -13,12 +16,23 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool _validarCorreo = false;
-  bool _validarContrasena = false;
-  bool _obscureText = true; // Estado del obscureText
+  final FirebaseAuthService _auth = FirebaseAuthService();
 
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  Usuario nuevoUsuario = Usuario();
+
+  @override
+  void dispose() {
+    mailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  bool _validarCorreo = false;
+  bool _validarContrasena = false;
+  bool _obscureText = true; // Estado del obscureText
 
   @override
   Widget build(BuildContext context) {
@@ -216,7 +230,7 @@ class _LoginState extends State<Login> {
                           ),
                           // Botón Iniciar sesión
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               setState(() {
                                 _validarCorreo = mailController
                                             .text.isNotEmpty &&
@@ -229,7 +243,12 @@ class _LoginState extends State<Login> {
                                         ? false
                                         : true;
 
+                                print("Correo y contraseña");
+                                print(_validarContrasena);
+                                print(_validarContrasena);
                                 if (!_validarCorreo && !_validarContrasena) {
+                                  // print("Antes de signin");
+                                  // _signIn;
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -318,6 +337,28 @@ class _LoginState extends State<Login> {
       return '1';
     } else {
       return '0';
+    }
+  }
+
+  void _signIn() async {
+    print("Dentro de signin");
+    nuevoUsuario.correo = mailController.text;
+    nuevoUsuario.password = passwordController.text;
+
+    User? user = await _auth.signInWithEmailAndPassword(nuevoUsuario);
+
+    print("Este es el usuario");
+    print(user);
+
+    if (user != null) {
+      print("Usuario ha iniciado sesión");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Mapa(),
+          ));
+    } else {
+      print("Ocurrio un error al registrar");
     }
   }
 }

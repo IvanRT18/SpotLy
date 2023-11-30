@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/ajustes.dart';
 import 'package:proyecto_movil/bookmarks.dart';
@@ -122,11 +123,13 @@ class _DrawerAppState extends State<DrawerApp> {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Login(),
-                        ));
+                    FirebaseAuth.instance.signOut().then((value) => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Login(),
+                              ))
+                        });
                   },
                   icon: const Icon(
                     Icons.logout_sharp,

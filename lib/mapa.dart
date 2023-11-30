@@ -7,7 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:proyecto_movil/drawer.dart';
 import 'package:proyecto_movil/firebase_funciones.dart';
-import 'package:proyecto_movil/ubicacion.dart';
+import 'package:proyecto_movil/models/ubicacion.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
 import 'package:toastification/toastification.dart';
 
@@ -280,35 +280,37 @@ class _MapaState extends State<Mapa> {
                                         print(nuevaUbicacion.latitud);
                                         print(nuevaUbicacion.longitud);
 
-                                        await addLugar(nuevaUbicacion);
-
-                                        Navigator.pop(context, "Agregar");
-                                        toastification.show(
-                                          context: context,
-                                          type: ToastificationType.success,
-                                          style: ToastificationStyle.flat,
-                                          title: 'Ubicación guardada',
-                                          description:
-                                              'Se ha guardado en "Mis Lugares"',
-                                          alignment: Alignment.topLeft,
-                                          autoCloseDuration:
-                                              const Duration(seconds: 4),
-                                          animationBuilder: (
-                                            context,
-                                            animation,
-                                            alignment,
-                                            child,
-                                          ) {
-                                            return ScaleTransition(
-                                              scale: animation,
-                                              child: child,
-                                            );
+                                        await addLugar(nuevaUbicacion).then(
+                                          (value) => {
+                                            Navigator.pop(context, "Agregar"),
+                                            toastification.show(
+                                              context: context,
+                                              type: ToastificationType.success,
+                                              style: ToastificationStyle.flat,
+                                              title: 'Ubicación guardada',
+                                              description:
+                                                  'Se ha guardado en "Mis Lugares"',
+                                              alignment: Alignment.topLeft,
+                                              autoCloseDuration:
+                                                  const Duration(seconds: 4),
+                                              animationBuilder: (
+                                                context,
+                                                animation,
+                                                alignment,
+                                                child,
+                                              ) {
+                                                return ScaleTransition(
+                                                  scale: animation,
+                                                  child: child,
+                                                );
+                                              },
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                              boxShadow: lowModeShadow,
+                                              showProgressBar: true,
+                                              dragToClose: true,
+                                            ),
                                           },
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          boxShadow: lowModeShadow,
-                                          showProgressBar: true,
-                                          dragToClose: true,
                                         );
                                       },
                                       child: const Text("Agregar"),

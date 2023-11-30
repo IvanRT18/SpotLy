@@ -1,8 +1,11 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:proyecto_movil/firebase_authentication.dart';
 
 import 'package:proyecto_movil/login.dart';
+import 'package:proyecto_movil/models/usuario.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
 
 class Register extends StatefulWidget {
@@ -13,15 +16,27 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
+  final mailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final userController = TextEditingController();
+
+  @override
+  void dispose() {
+    mailController.dispose();
+    passwordController.dispose();
+    userController.dispose();
+    super.dispose();
+  }
+
   bool _validarCorreo = false;
   bool _validarContrasena = false;
   bool _validarUsuario = false;
 
   bool _obscureText = true; // Estado del obscureText
 
-  final mailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final userController = TextEditingController();
+  Usuario nuevoUsuario = Usuario();
 
   @override
   Widget build(BuildContext context) {
@@ -300,11 +315,7 @@ class _RegisterState extends State<Register> {
                                 if (!_validarCorreo &&
                                     !_validarContrasena &&
                                     !_validarUsuario) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Login(),
-                                      ));
+                                  _signUp();
                                 }
                               });
                             },
@@ -388,6 +399,28 @@ class _RegisterState extends State<Register> {
       return '1';
     } else {
       return '0';
+    }
+  }
+
+  void _signUp() async {
+    nuevoUsuario.usuario = userController.text;
+    nuevoUsuario.correo = mailController.text;
+    nuevoUsuario.password = passwordController.text;
+
+    User? user = await _auth.signUpWithEmailAndPassword(nuevoUsuario);
+
+    print("Este es el usuario");
+    print(user);
+
+    if (user != null) {
+      print("Usuario registrado");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Login(),
+          ));
+    } else {
+      print("Ocurrio un error al registrar");
     }
   }
 }
