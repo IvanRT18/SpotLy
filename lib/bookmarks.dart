@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:proyecto_movil/drawer.dart';
 import 'package:proyecto_movil/firebase_funciones.dart';
@@ -60,6 +61,8 @@ class _BookmarkState extends State<Bookmark> {
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
                     itemBuilder: (BuildContext context, int index) {
+                      print("Calificacion mis lugares");
+                      print(snapshot.data?[index]['calificacion']);
                       return Card(
                         color: rojoApp,
                         margin: const EdgeInsets.only(
@@ -106,13 +109,27 @@ class _BookmarkState extends State<Bookmark> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    const Row(
+                                    Row(
                                       children: [
-                                        Text(
-                                          "Estrellas",
-                                          style: TextStyle(
-                                              color: Colors.yellow,
-                                              fontSize: 20),
+                                        RatingBar.builder(
+                                          initialRating: snapshot.data?[index]
+                                                  ['calificacion']
+                                              .toDouble(),
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: true,
+                                          itemCount: 5,
+                                          itemPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 4.0),
+                                          itemBuilder: (context, _) =>
+                                              const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            print(rating);
+                                          },
                                         ),
                                       ],
                                     ),
