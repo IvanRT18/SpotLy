@@ -95,13 +95,19 @@ class _BookmarkState extends State<Bookmark> {
                                     ),
                                     Row(
                                       children: [
-                                        Text(
-                                          snapshot.data?[index]['descripcion'],
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w400,
-                                            height: 0,
+                                        Expanded(
+                                          child: Text(
+                                            snapshot.data?[index]
+                                                ['descripcion'],
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            softWrap: false,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w400,
+                                              height: 0,
+                                            ),
                                           ),
                                         ),
                                       ],
