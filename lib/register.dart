@@ -262,7 +262,7 @@ class _RegisterState extends State<Register> {
                                             fontWeight: FontWeight.w400,
                                           ),
                                           errorText: _validarContrasena
-                                              ? 'Debe de escribir una contraseña'
+                                              ? 'Debe de ser una contraseña mayor a 6 caracteres'
                                               : null),
                                       onChanged: (texto) {
                                         setState(() {
@@ -304,7 +304,8 @@ class _RegisterState extends State<Register> {
                                     : true;
 
                                 _validarContrasena =
-                                    passwordController.text.isNotEmpty
+                                    passwordController.text.length >= 6 &&
+                                            passwordController.text.isNotEmpty
                                         ? false
                                         : true;
 
