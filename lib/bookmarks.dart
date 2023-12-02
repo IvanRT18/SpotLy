@@ -15,6 +15,8 @@ class Bookmark extends StatefulWidget {
 }
 
 class _BookmarkState extends State<Bookmark> {
+  String dropdownValue = "Dog";
+
   @override
   Widget build(BuildContext context) {
     final double widthDevice = MediaQuery.of(context).size.width;
@@ -148,13 +150,36 @@ class _BookmarkState extends State<Bookmark> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(
-                                          FontAwesomeIcons.ellipsisVertical,
-                                          size: 30,
-                                          color: Colors.white,
-                                        ))
+                                    // IconButton(
+                                    //   onPressed: () {},
+                                    //   icon: const Icon(
+                                    //     FontAwesomeIcons.ellipsisVertical,
+                                    //     size: 30,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    // )
+                                    DropdownButton<String>(
+                                      value: dropdownValue,
+                                      items: <String>[
+                                        'Dog',
+                                        'Cat',
+                                        'Tiger',
+                                        'Lion'
+                                      ].map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem(
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(fontSize: 30),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          dropdownValue = newValue!;
+                                        });
+                                      },
+                                    ),
                                   ],
                                 ),
                               ),
