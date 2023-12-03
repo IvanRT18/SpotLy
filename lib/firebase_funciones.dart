@@ -11,7 +11,14 @@ Future<List> getUsuarios() async {
   QuerySnapshot queryUsuarios = await collectionReferenceUsuarios.get();
 
   queryUsuarios.docs.forEach((user) {
-    usuarios.add(user.data());
+    final data = user.data() as Map<String, dynamic>;
+    final usuario = {
+      "nombre_lugar": data['nombre_lugar'],
+      "descripcion": data['descripcion'],
+      "calificacion": data['calificacion'],
+      "uid": user.id,
+    };
+    usuarios.add(user);
   });
 
   return usuarios;
@@ -41,4 +48,9 @@ Future<void> addLugar(Ubicacion localizacion) async {
     'latitud': localizacion.latitud,
     'lonigitud': localizacion.longitud,
   });
+}
+
+//Actualiza un lugar en la base de datos
+Future<void> updateLugar(Ubicacion localizacion, String id) async {
+  // await db.collection('Localizacion').doc(localizacion.)
 }
