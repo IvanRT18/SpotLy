@@ -20,48 +20,49 @@ class _AjustesState extends State<Ajustes> {
     double appbarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: const Icon(
-                Icons.menu,
-                color: rojoApp,
-                size: 45,
-              ),
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
-          },
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 30),
-            child: Text(
-              "Ajustes",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 36,
-                  fontWeight: FontWeight.w400),
-            ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                icon: const Icon(
+                  Icons.menu,
+                  color: rojoApp,
+                  size: 45,
+                ),
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
           ),
-        ],
-      ),
-      drawer: const DrawerApp(),
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          actions: const [
+            Padding(
+              padding: EdgeInsets.only(right: 30),
+              child: Text(
+                "Ajustes",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 36,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+          ],
+        ),
+        drawer: const DrawerApp(),
+        body: SingleChildScrollView(
+          child: Stack(
             children: [
-              const SizedBox(height: 15),
-              DarkModeToggle(),
-              MyDropdownMenu(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 15),
+                  DarkModeToggle(),
+                  MyDropdownMenu(),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
 
@@ -113,6 +114,10 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
   final passwordController = TextEditingController();
   final userController = TextEditingController();
 
+  bool _validarCorreo = false;
+  bool _validarContrasena = false;
+  bool _validarUsuario = false;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -147,107 +152,14 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
               children: [
                 // Usuario
                 TextFormField(
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 132, 132, 128),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  controller: userController,
-                  textAlign: TextAlign.left,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                        width: 2,
-                        color: Color(0x8C848480),
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                        width: 20,
-                        color: Color(0x8C848480),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                        width: 2,
-                        color: Color(0x8C848480),
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: "Usuario",
-                    hintStyle: const TextStyle(
+                    style: const TextStyle(
                       color: Color.fromARGB(255, 132, 132, 128),
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     ),
-                    errorText: 'Debe de escribir un nombre de usuario válido',
-                  ),
-                ),
-                // Correo
-                TextFormField(
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 132, 132, 128),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  controller: mailController,
-                  textAlign: TextAlign.left,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                        width: 2,
-                        color: Color(0x8C848480),
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                        width: 20,
-                        color: Color(0x8C848480),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                        width: 2,
-                        color: Color(0x8C848480),
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: "Correo",
-                    hintStyle: const TextStyle(
-                      color: Color.fromARGB(255, 132, 132, 128),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    errorText: 'Debe de escribir un correo válido',
-                  ),
-                ),
-                // Contraseña
-                TextFormField(
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 132, 132, 128),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  controller: passwordController,
-                  textAlign: TextAlign.left,
-                  obscureText: false,
-                  decoration: InputDecoration(
+                    controller: userController,
+                    textAlign: TextAlign.left,
+                    decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
                       enabledBorder: OutlineInputBorder(
@@ -261,9 +173,8 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
                         borderSide: const BorderSide(
-                          width: 2,
+                          width: 20,
                           color: Color(0x8C848480),
-                          style: BorderStyle.solid,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -276,23 +187,164 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: "Contraseña",
+                      hintText: "Usuario",
                       hintStyle: const TextStyle(
                         color: Color.fromARGB(255, 132, 132, 128),
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
-                      errorText:
-                          'Debe de ser una contraseña mayor a 6 caracteres'),
-                ),
-                const SizedBox(height: 10),
+                      errorText: _validarUsuario
+                          ? 'Debe de escribir un nombre de usuario válido'
+                          : null,
+                    ),
+                    onChanged: (texto) {
+                      setState(() {
+                        if (texto.trim().isNotEmpty) {
+                          _validarUsuario = false;
+                        }
+                      });
+                    }),
+                const SizedBox(height: 15),
+                // Correo
+                TextFormField(
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 132, 132, 128),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    controller: mailController,
+                    textAlign: TextAlign.left,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                          width: 2,
+                          color: Color(0x8C848480),
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                          width: 20,
+                          color: Color(0x8C848480),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                          width: 2,
+                          color: Color(0x8C848480),
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Correo",
+                      hintStyle: const TextStyle(
+                        color: Color.fromARGB(255, 132, 132, 128),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      errorText: _validarCorreo
+                          ? 'Debe de escribir un correo válido'
+                          : null,
+                    ),
+                    onChanged: (texto) {
+                      setState(() {
+                        if (texto.trim().isNotEmpty) {
+                          _validarCorreo = false;
+                        }
+                      });
+                    }),
+                const SizedBox(height: 15),
+                // Contraseña
+                TextFormField(
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 132, 132, 128),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    controller: passwordController,
+                    textAlign: TextAlign.left,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            width: 2,
+                            color: Color(0x8C848480),
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            width: 2,
+                            color: Color(0x8C848480),
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            width: 2,
+                            color: Color(0x8C848480),
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Contraseña",
+                        hintStyle: const TextStyle(
+                          color: Color.fromARGB(255, 132, 132, 128),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        errorText: _validarContrasena
+                            ? 'Debe de ser una contraseña mayor a 6 caracteres'
+                            : null),
+                    onChanged: (texto) {
+                      setState(() {
+                        if (texto.trim().isNotEmpty) {
+                          _validarContrasena = false;
+                        }
+                      });
+                    }),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // Botón Aceptar
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _validarCorreo = mailController.text.isNotEmpty &&
+                                    validaCorreo(mailController.text) == '1'
+                                ? false
+                                : true;
+
+                            _validarContrasena =
+                                passwordController.text.length >= 6 &&
+                                        passwordController.text.isNotEmpty
+                                    ? false
+                                    : true;
+
+                            _validarUsuario =
+                                userController.text.isNotEmpty ? false : true;
+
+                            if (!_validarCorreo &&
+                                !_validarContrasena &&
+                                !_validarUsuario) {
+                              // Acción para actualizar datos
+                            }
+                          });
+                        },
                         style: ElevatedButton.styleFrom(
                           primary: rojoApp, // Fondo rojo para el botón Aceptar
                           onPrimary: Colors
@@ -310,9 +362,12 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
                       ),
                     ),
                     SizedBox(width: 16), // Separación entre los botones
+                    // Botón Cancelar
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _resetFields();
+                        },
                         style: ElevatedButton.styleFrom(
                           primary: Colors
                               .white, // Fondo blanco para el botón Cancelar
@@ -338,5 +393,31 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
         ],
       ),
     );
+  }
+
+  String? validaCorreo(String email) {
+    Pattern pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    RegExp regExp = RegExp(pattern.toString());
+
+    if (regExp.hasMatch(email)) {
+      return '1';
+    } else {
+      return '0';
+    }
+  }
+
+  // Función para referescar formulario y cerrar menú al oprimir cancelar
+  void _resetFields() {
+    mailController.clear();
+    passwordController.clear();
+    userController.clear();
+
+    _validarCorreo = false;
+    _validarContrasena = false;
+    _validarUsuario = false;
+    setState(() {
+      _isExpanded = false;
+    });
   }
 }
