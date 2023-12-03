@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/drawer.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
+import 'package:proyecto_movil/utils/singleton.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,11 +11,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Singleton singleton = Singleton();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(

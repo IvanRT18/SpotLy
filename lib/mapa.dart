@@ -9,6 +9,7 @@ import 'package:proyecto_movil/drawer.dart';
 import 'package:proyecto_movil/firebase_funciones.dart';
 import 'package:proyecto_movil/models/ubicacion.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
+import 'package:proyecto_movil/utils/singleton.dart';
 import 'package:toastification/toastification.dart';
 
 class Mapa extends StatefulWidget {
@@ -19,6 +20,8 @@ class Mapa extends StatefulWidget {
 }
 
 class _MapaState extends State<Mapa> {
+  Singleton singleton = Singleton();
+
   late GoogleMapController mapController;
 
   late final LatLng _center =
@@ -64,9 +67,9 @@ class _MapaState extends State<Mapa> {
     late double calificacion = 3;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -80,11 +83,13 @@ class _MapaState extends State<Mapa> {
             );
           },
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 30),
+            padding: const EdgeInsets.only(right: 30),
             child: Image(
-              image: AssetImage('assets/images/spotlyLogo.png'),
+              image: AssetImage(Singleton().darkMode
+                  ? 'assets/images/spotlyLogo.png'
+                  : 'assets/images/spotlyLogo_darkmode.png'),
               width: 120,
             ),
           ),

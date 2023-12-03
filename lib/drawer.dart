@@ -5,6 +5,7 @@ import 'package:proyecto_movil/bookmarks.dart';
 import 'package:proyecto_movil/login.dart';
 import 'package:proyecto_movil/mapa.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
+import 'package:proyecto_movil/utils/singleton.dart';
 
 class DrawerApp extends StatefulWidget {
   const DrawerApp({super.key});
@@ -14,7 +15,7 @@ class DrawerApp extends StatefulWidget {
 }
 
 class _DrawerAppState extends State<DrawerApp> {
-  // Singleton singleton = Singleton();
+  Singleton singleton = Singleton();
 
   TextStyle listItemStyle = const TextStyle(
       color: Colors.white,
@@ -27,7 +28,7 @@ class _DrawerAppState extends State<DrawerApp> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: rojoApp,
+      backgroundColor: Singleton().darkMode ? rojoApp : rojoAppDark,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(25),
@@ -41,6 +42,15 @@ class _DrawerAppState extends State<DrawerApp> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 70),
+                  child: Image(
+                    image: AssetImage(Singleton().darkMode
+                        ? 'assets/images/spotlyLogo.png'
+                        : 'assets/images/spotlyLogo_darkmode.png'),
+                    width: 120,
+                  ),
+                ),
                 IconButton(
                   onPressed: () {
                     Scaffold.of(context).closeDrawer();
@@ -58,6 +68,9 @@ class _DrawerAppState extends State<DrawerApp> {
             height: MediaQuery.of(context).size.height * .75,
             child: Column(
               children: [
+                const SizedBox(
+                  height: 30,
+                ),
                 ListTile(
                   leading: Icon(Icons.home, size: listIconSize),
                   iconColor: Colors.white,
@@ -71,19 +84,6 @@ class _DrawerAppState extends State<DrawerApp> {
                     ));
                   },
                 ),
-                // const SizedBox(
-                //   height: 30,
-                // ),
-                // ListTile(
-                //   leading: Icon(Icons.location_on_rounded, size: listIconSize),
-                //   iconColor: Colors.white,
-                //   title: Text('Mapa', style: listItemStyle),
-                //   onTap: () {
-                //     Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (context) => const Mapa(),
-                //     ));
-                //   },
-                // ),
                 const SizedBox(
                   height: 30,
                 ),

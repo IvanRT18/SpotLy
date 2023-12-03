@@ -1,9 +1,10 @@
-// ignore_for_file: unused_local_variable, deprecated_member_use
+// ignore_for_file: unused_local_variable, deprecated_member_use, library_private_types_in_public_api, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/drawer.dart';
 import 'package:proyecto_movil/firebase_funciones.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
+import 'package:proyecto_movil/utils/singleton.dart';
 
 class Ajustes extends StatefulWidget {
   const Ajustes({super.key});
@@ -13,6 +14,8 @@ class Ajustes extends StatefulWidget {
 }
 
 class _AjustesState extends State<Ajustes> {
+  final Singleton singleton = Singleton();
+
   @override
   Widget build(BuildContext context) {
     final double widthDevice = MediaQuery.of(context).size.width;
@@ -20,8 +23,9 @@ class _AjustesState extends State<Ajustes> {
     double appbarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
 
     return Scaffold(
+        backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -35,13 +39,14 @@ class _AjustesState extends State<Ajustes> {
               );
             },
           ),
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.only(right: 30),
+              padding: const EdgeInsets.only(right: 30),
               child: Text(
                 "Ajustes",
                 style: TextStyle(
-                    color: Colors.black,
+                    color:
+                        Singleton().darkMode ? fontColorDark : fontColorLight,
                     fontSize: 36,
                     fontWeight: FontWeight.w400),
               ),
@@ -56,8 +61,36 @@ class _AjustesState extends State<Ajustes> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 15),
-                  DarkModeToggle(),
-                  MyDropdownMenu(),
+                  // Botón Modo Oscuro
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Modo oscuro',
+                          style: TextStyle(
+                            color: singleton.darkMode
+                                ? fontColorDark
+                                : fontColorLight,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Switch(
+                          value: singleton.darkMode,
+                          onChanged: (value) {
+                            Singleton().toggleDarkMode();
+                            singleton.darkMode = value;
+                            setState(() {});
+                          },
+                          activeTrackColor: rojoApp,
+                          activeColor: grisApp,
+                        ),
+                      ],
+                    ),
+                  ),
+                  MyDropdownMenu(singleton: singleton),
                 ],
               ),
             ],
@@ -66,43 +99,11 @@ class _AjustesState extends State<Ajustes> {
   }
 }
 
-class DarkModeToggle extends StatefulWidget {
-  @override
-  _DarkModeToggleState createState() => _DarkModeToggleState();
-}
-
-class _DarkModeToggleState extends State<DarkModeToggle> {
-  bool _isDarkMode = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Modo oscuro',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-          ),
-          Switch(
-            value: _isDarkMode,
-            onChanged: (value) {
-              setState(() {
-                _isDarkMode = value;
-                // Puedes añadir lógica para cambiar entre modos claro y oscuro aquí
-              });
-            },
-            activeTrackColor: Colors.grey[700],
-            activeColor: Colors.blueAccent,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class MyDropdownMenu extends StatefulWidget {
+  final Singleton singleton;
+
+  const MyDropdownMenu({required this.singleton});
+
   @override
   _MyDropdownMenuState createState() => _MyDropdownMenuState();
 }
@@ -134,16 +135,26 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                   child: Text(
                     'Editar usuario',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: widget.singleton.darkMode
+                            ? fontColorDark
+                            : fontColorLight,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
-                Icon(_isExpanded
-                    ? Icons.keyboard_arrow_up
-                    : Icons.keyboard_arrow_down),
+                Icon(
+                  _isExpanded
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  color: widget.singleton.darkMode
+                      ? fontColorDark
+                      : fontColorLight,
+                ),
               ],
             ),
           ),
@@ -361,7 +372,7 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 16), // Separación entre los botones
+                    const SizedBox(width: 16), // Separación entre los botones
                     // Botón Cancelar
                     Expanded(
                       child: ElevatedButton(
