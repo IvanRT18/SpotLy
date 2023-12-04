@@ -7,6 +7,7 @@ import 'package:proyecto_movil/mapa.dart';
 import 'package:proyecto_movil/models/usuario.dart';
 import 'package:proyecto_movil/register.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
+import 'package:toastification/toastification.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -242,20 +243,15 @@ class _LoginState extends State<Login> {
                                     passwordController.text.isNotEmpty
                                         ? false
                                         : true;
-
-                                print("Correo y contraseña");
-                                print(_validarContrasena);
-                                print(_validarContrasena);
-                                if (!_validarCorreo && !_validarContrasena) {
-                                  // print("Antes de signin");
-                                  // _signIn;
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Mapa(),
-                                      ));
-                                }
                               });
+
+                              print("Correo y contraseña");
+                              print(_validarContrasena);
+                              print(_validarContrasena);
+                              if (!_validarCorreo && !_validarContrasena) {
+                                print("Antes de ___signin");
+                                await _signIn();
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: verdeApp,
@@ -340,7 +336,7 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void _signIn() async {
+  Future _signIn() async {
     print("Dentro de signin");
     nuevoUsuario.correo = mailController.text;
     nuevoUsuario.password = passwordController.text;
@@ -358,7 +354,30 @@ class _LoginState extends State<Login> {
             builder: (context) => const Mapa(),
           ));
     } else {
-      print("Ocurrio un error al registrar");
+      print("Ocurrio un error al iniciar sesión");
+      toastification.show(
+        context: context,
+        type: ToastificationType.error,
+        style: ToastificationStyle.fillColored,
+        title: 'Usuario o contraseña incorrecta',
+        description: 'Hubo un error al tratar de iniciar sesión',
+        alignment: Alignment.topCenter,
+        autoCloseDuration: const Duration(seconds: 3),
+        animationBuilder: (
+          context,
+          animation,
+          alignment,
+          child,
+        ) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: lowModeShadow,
+        dragToClose: true,
+      );
     }
   }
 }

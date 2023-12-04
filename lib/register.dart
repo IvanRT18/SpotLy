@@ -7,6 +7,7 @@ import 'package:proyecto_movil/firebase_authentication.dart';
 import 'package:proyecto_movil/login.dart';
 import 'package:proyecto_movil/models/usuario.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
+import 'package:toastification/toastification.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -422,6 +423,29 @@ class _RegisterState extends State<Register> {
           ));
     } else {
       print("Ocurrio un error al registrar");
+      toastification.show(
+        context: context,
+        type: ToastificationType.error,
+        style: ToastificationStyle.fillColored,
+        title: 'Usuario ya registrado',
+        description: 'Parece que ese correo ya ha sido registrado antes.',
+        alignment: Alignment.topCenter,
+        autoCloseDuration: const Duration(seconds: 3),
+        animationBuilder: (
+          context,
+          animation,
+          alignment,
+          child,
+        ) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: lowModeShadow,
+        dragToClose: true,
+      );
     }
   }
 }
