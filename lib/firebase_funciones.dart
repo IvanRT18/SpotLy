@@ -14,10 +14,14 @@ Future<List> getUsuarios() async {
 
   queryUsuarios.docs.forEach((user) {
     final data = user.data() as Map<String, dynamic>;
+    print("IDDDDDDDDDD");
+    print(user.id);
     final usuario = {
       "nombre_lugar": data['nombre_lugar'],
       "descripcion": data['descripcion'],
       "calificacion": data['calificacion'],
+      "latitud": data['latitud'],
+      "longitu": data['longitud'],
       "uid": user.id,
     };
     usuarios.add(user);
@@ -35,7 +39,19 @@ Future<List> getLugares() async {
   QuerySnapshot queryLocalizaciones = await collectionReferenceUsuarios.get();
 
   queryLocalizaciones.docs.forEach((location) {
-    localizaciones.add(location.data());
+    final data = location.data() as Map<String, dynamic>;
+    print("IDDDDDDDDDD");
+    print(location.id);
+    final localizacion = {
+      "nombre_lugar": data['nombre_lugar'],
+      "descripcion": data['descripcion'],
+      "calificacion": data['calificacion'],
+      "latitud": data['latitud'],
+      "longitud": data['longitud'],
+      "uid": location.id,
+    };
+
+    localizaciones.add(localizacion);
   });
 
   return localizaciones;
@@ -48,7 +64,7 @@ Future<void> addLugar(Ubicacion localizacion) async {
     'descripcion': localizacion.descripcion,
     'calificacion': localizacion.calificacion,
     'latitud': localizacion.latitud,
-    'lonigitud': localizacion.longitud,
+    'longitud': localizacion.longitud,
   });
 }
 

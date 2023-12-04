@@ -35,6 +35,8 @@ class _BookmarkState extends State<Bookmark> {
     final double heightDevice = MediaQuery.of(context).size.height;
     double appbarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
 
+    Ubicacion ubicacionSeleccionada = Ubicacion();
+
     return Scaffold(
       backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
       appBar: AppBar(
@@ -168,6 +170,47 @@ class _BookmarkState extends State<Bookmark> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
+                                        singleton.idSeleccionado =
+                                            snapshot.data?[index]['uid'];
+                                        singleton.calificacionSeleccionado =
+                                            snapshot.data?[index]
+                                                ['calificacion'];
+                                        singleton.descripcionSeleccionado =
+                                            snapshot.data?[index]
+                                                ['descripcion'];
+                                        singleton.nombreSeleccionado = snapshot
+                                            .data?[index]['nombre_lugar'];
+                                        singleton.latSeleccionado =
+                                            snapshot.data?[index]['latitud'];
+                                        singleton.longSeleccionado =
+                                            snapshot.data?[index]['longitud'];
+
+                                        print(snapshot
+                                            .data?[index]['nombre_lugar']
+                                            .runtimeType);
+                                        print(snapshot
+                                            .data?[index]['calificacion']
+                                            .runtimeType);
+                                        print(snapshot
+                                            .data?[index]['descripcion']
+                                            .runtimeType);
+                                        print(snapshot.data?[index]['latitud']
+                                            .runtimeType);
+                                        print(snapshot.data?[index]['longitud']
+                                            .runtimeType);
+                                        print(snapshot
+                                            .data?[index]['uid'].runtimeType);
+
+                                        print("SIngleton valores___________");
+                                        print(singleton.idSeleccionado);
+                                        print(
+                                            singleton.calificacionSeleccionado);
+                                        print(
+                                            singleton.descripcionSeleccionado);
+                                        print(singleton.nombreSeleccionado);
+
+                                        print(singleton.longSeleccionado);
+                                        print(singleton.latSeleccionado);
                                         showDialog<String>(
                                           context: context,
                                           builder: (context) =>
@@ -254,6 +297,8 @@ class _BookmarkState extends State<Bookmark> {
                                                                         ),
                                                                       ),
                                                                       TextFormField(
+                                                                        // initialValue:
+                                                                        //     singleton.nombreSeleccionado,
                                                                         style: const TextStyle(
                                                                             color: Colors
                                                                                 .white,
@@ -278,7 +323,7 @@ class _BookmarkState extends State<Bookmark> {
                                                                               ? rojoApp
                                                                               : rojoAppDark,
                                                                           hintText:
-                                                                              "Nombre",
+                                                                              singleton.nombreSeleccionado,
                                                                           hintStyle: const TextStyle(
                                                                               color: Colors.white,
                                                                               fontSize: 20,
@@ -323,7 +368,7 @@ class _BookmarkState extends State<Bookmark> {
                                                                               ? rojoApp
                                                                               : rojoAppDark,
                                                                           hintText:
-                                                                              "Descripcion",
+                                                                              singleton.descripcionSeleccionado,
                                                                           hintStyle: const TextStyle(
                                                                               color: Colors.white,
                                                                               fontSize: 20,
@@ -344,7 +389,7 @@ class _BookmarkState extends State<Bookmark> {
                                                                       RatingBar
                                                                           .builder(
                                                                         initialRating:
-                                                                            3,
+                                                                            singleton.calificacionSeleccionado,
                                                                         minRating:
                                                                             1,
                                                                         direction:
