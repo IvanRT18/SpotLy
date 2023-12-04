@@ -163,14 +163,31 @@ class _MapaState extends State<Mapa> {
                               context: context,
                               builder: (context) => SingleChildScrollView(
                                 child: AlertDialog(
-                                  title: const Text("Agregar ubicación"),
+                                  backgroundColor: Singleton().darkMode
+                                      ? bgColorLight
+                                      : bgColorDark,
+                                  title: Text(
+                                    "Agregar ubicación",
+                                    style: TextStyle(
+                                      color: Singleton().darkMode
+                                          ? fontColorDark
+                                          : fontColorLight,
+                                    ),
+                                  ),
                                   content: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const Text(
-                                        'Escribe la información de la nueva ubicación',
-                                        style: TextStyle(
-                                            fontSize: 17, color: Colors.black),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: Text(
+                                          'Escribe la información de la nueva ubicación',
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              color: Singleton().darkMode
+                                                  ? fontColorDark
+                                                  : fontColorLight),
+                                        ),
                                       ),
                                       TextFormField(
                                         style: const TextStyle(
@@ -186,22 +203,18 @@ class _MapaState extends State<Mapa> {
                                                   BorderRadius.circular(10),
                                               borderSide: BorderSide.none),
                                           filled: true,
-                                          fillColor: rojoApp,
+                                          fillColor: Singleton().darkMode
+                                              ? rojoApp
+                                              : rojoAppDark,
                                           hintText: "Nombre",
                                           hintStyle: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w500),
-                                          // errorText: _validateUser
-                                          //     ? "Debe de escribir un usuario"
-                                          //     : null,
-                                          // prefixIcon: const Icon(Icons.verified_user),
                                         ),
                                         onChanged: (texto) {
                                           setState(() {
-                                            if (texto.trim().isEmpty) {
-                                              // _validateUser = false;
-                                            }
+                                            if (texto.trim().isEmpty) {}
                                           });
                                         },
                                       ),
@@ -223,22 +236,18 @@ class _MapaState extends State<Mapa> {
                                                   BorderRadius.circular(10),
                                               borderSide: BorderSide.none),
                                           filled: true,
-                                          fillColor: rojoApp,
+                                          fillColor: Singleton().darkMode
+                                              ? rojoApp
+                                              : rojoAppDark,
                                           hintText: "Descripcion",
                                           hintStyle: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w500),
-                                          // errorText: _validateUser
-                                          //     ? "Debe de escribir un usuario"
-                                          //     : null,
-                                          // prefixIcon: const Icon(Icons.verified_user),
                                         ),
                                         onChanged: (texto) {
                                           setState(() {
-                                            if (texto.trim().isEmpty) {
-                                              // _validateUser = false;
-                                            }
+                                            if (texto.trim().isEmpty) {}
                                           });
                                         },
                                       ),
@@ -268,7 +277,13 @@ class _MapaState extends State<Mapa> {
                                     TextButton(
                                       onPressed: () =>
                                           Navigator.pop(context, "Cancelar"),
-                                      child: const Text("Cancelar"),
+                                      child: Text(
+                                        "Cancelar",
+                                        style: TextStyle(
+                                            color: Singleton().darkMode
+                                                ? fontColorDark
+                                                : fontColorLight),
+                                      ),
                                     ),
                                     TextButton(
                                       onPressed: () async {
@@ -318,7 +333,11 @@ class _MapaState extends State<Mapa> {
                                           },
                                         );
                                       },
-                                      child: const Text("Agregar"),
+                                      child: Text("Agregar",
+                                          style: TextStyle(
+                                              color: Singleton().darkMode
+                                                  ? fontColorDark
+                                                  : fontColorLight)),
                                     ),
                                   ],
                                 ),

@@ -46,7 +46,7 @@ class _DrawerAppState extends State<DrawerApp> {
                   padding: const EdgeInsets.only(right: 70),
                   child: Image(
                     image: AssetImage(Singleton().darkMode
-                        ? 'assets/images/spotlyLogo.png'
+                        ? 'assets/images/spotlyLogo_.png'
                         : 'assets/images/spotlyLogo_darkmode.png'),
                     width: 120,
                   ),

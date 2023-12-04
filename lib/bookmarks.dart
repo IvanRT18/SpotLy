@@ -7,6 +7,7 @@ import 'package:proyecto_movil/drawer.dart';
 import 'package:proyecto_movil/firebase_funciones.dart';
 import 'package:proyecto_movil/models/ubicacion.dart';
 import 'package:proyecto_movil/utils/constantes.dart';
+import 'package:proyecto_movil/utils/singleton.dart';
 import 'package:toastification/toastification.dart';
 
 class Bookmark extends StatefulWidget {
@@ -17,7 +18,13 @@ class Bookmark extends StatefulWidget {
 }
 
 class _BookmarkState extends State<Bookmark> {
+  Singleton singleton = Singleton();
+
   String dropdownValue = "Dog";
+
+  final GlobalKey<FormState> opcionesDialogKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> confirmarEliminarDialogKey =
+      GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +36,9 @@ class _BookmarkState extends State<Bookmark> {
     double appbarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
 
     return Scaffold(
+      backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -44,13 +52,13 @@ class _BookmarkState extends State<Bookmark> {
             );
           },
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 30),
+            padding: const EdgeInsets.only(right: 30),
             child: Text(
               "Mis Lugares",
               style: TextStyle(
-                  color: Colors.black,
+                  color: Singleton().darkMode ? fontColorDark : fontColorLight,
                   fontSize: 36,
                   fontWeight: FontWeight.w400),
             ),
@@ -60,6 +68,9 @@ class _BookmarkState extends State<Bookmark> {
       drawer: const DrawerApp(),
       body: Column(
         children: [
+          const SizedBox(
+            height: 15,
+          ),
           Expanded(
             child: FutureBuilder(
               future: getLugares(),
@@ -71,7 +82,7 @@ class _BookmarkState extends State<Bookmark> {
                       print("Calificacion mis lugares");
                       print(snapshot.data?[index]['calificacion']);
                       return Card(
-                        color: rojoApp,
+                        color: Singleton().darkMode ? rojoApp : rojoAppDark,
                         margin: const EdgeInsets.only(
                             bottom: 15, left: 15, right: 15),
                         elevation: 0,
@@ -162,82 +173,528 @@ class _BookmarkState extends State<Bookmark> {
                                           builder: (context) =>
                                               SingleChildScrollView(
                                             child: AlertDialog(
-                                              backgroundColor: Colors.white,
-                                              title: const Text("Opciones"),
-                                              content: Column(
-                                                mainAxisSize: MainAxisSize.min,
+                                              key: opcionesDialogKey,
+                                              backgroundColor:
+                                                  Singleton().darkMode
+                                                      ? bgColorLight
+                                                      : bgColorDark,
+                                              title: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Ubicacion nuevaUbicacion = Ubicacion(
-                                                          calificacion: snapshot
-                                                                  .data?[index]
-                                                              ['calificacion'],
-                                                          descripcion: snapshot
-                                                                  .data?[index]
-                                                              ['descripcion'],
-                                                          nombreUbicacion: snapshot
-                                                                  .data?[index]
-                                                              ['nombre_lugar']);
-                                                      updateLugar(
-                                                          nuevaUbicacion,
-                                                          snapshot.data?[index]
-                                                              ['uid']);
-                                                    },
-                                                    style: TextButton.styleFrom(
-                                                      backgroundColor: rojoApp,
-                                                      elevation: 0,
-                                                      fixedSize:
-                                                          const Size(100, 40),
-                                                      shape:
-                                                          const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(15),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    child: const Text(
-                                                      "Editar",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20,
-                                                      ),
+                                                  Text(
+                                                    "Opciones",
+                                                    style: TextStyle(
+                                                      color:
+                                                          Singleton().darkMode
+                                                              ? fontColorDark
+                                                              : fontColorLight,
                                                     ),
                                                   ),
-                                                  TextButton(
-                                                    onPressed: () {},
-                                                    style: TextButton.styleFrom(
-                                                      backgroundColor: rojoApp,
-                                                      elevation: 0,
-                                                      fixedSize:
-                                                          const Size(100, 40),
-                                                      shape:
-                                                          const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(15),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    child: const Text(
-                                                      "Eliminar",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
+                                                  IconButton(
+                                                    icon: Icon(Icons.close,
+                                                        color: Singleton()
+                                                                .darkMode
+                                                            ? fontColorDark
+                                                            : fontColorLight),
+                                                    onPressed: () {
+                                                      Navigator.pop(
+                                                          context, "Cancelar");
+                                                    },
                                                   ),
                                                 ],
                                               ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          context, "Cancelar"),
-                                                  child: const Text("Cancelar"),
-                                                ),
-                                              ],
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  // Editar
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: TextButton(
+                                                          onPressed: () {
+                                                            showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  backgroundColor: Singleton()
+                                                                          .darkMode
+                                                                      ? bgColorLight
+                                                                      : bgColorDark,
+                                                                  title: Text(
+                                                                    "Agregar ubicación",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Singleton()
+                                                                              .darkMode
+                                                                          ? fontColorDark
+                                                                          : fontColorLight,
+                                                                    ),
+                                                                  ),
+                                                                  content:
+                                                                      Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: const EdgeInsets
+                                                                            .only(
+                                                                            bottom:
+                                                                                10),
+                                                                        child:
+                                                                            Text(
+                                                                          'Escribe la información de la nueva ubicación',
+                                                                          style: TextStyle(
+                                                                              fontSize: 17,
+                                                                              color: Singleton().darkMode ? fontColorDark : fontColorLight),
+                                                                        ),
+                                                                      ),
+                                                                      TextFormField(
+                                                                        style: const TextStyle(
+                                                                            color: Colors
+                                                                                .white,
+                                                                            fontSize:
+                                                                                20,
+                                                                            fontWeight:
+                                                                                FontWeight.w500),
+                                                                        controller:
+                                                                            nombre,
+                                                                        obscureText:
+                                                                            false,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          border: OutlineInputBorder(
+                                                                              borderRadius: BorderRadius.circular(10),
+                                                                              borderSide: BorderSide.none),
+                                                                          filled:
+                                                                              true,
+                                                                          fillColor: Singleton().darkMode
+                                                                              ? rojoApp
+                                                                              : rojoAppDark,
+                                                                          hintText:
+                                                                              "Nombre",
+                                                                          hintStyle: const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 20,
+                                                                              fontWeight: FontWeight.w500),
+                                                                        ),
+                                                                        onChanged:
+                                                                            (texto) {
+                                                                          setState(
+                                                                              () {
+                                                                            if (texto.trim().isEmpty) {}
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            20,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        maxLines:
+                                                                            5,
+                                                                        style: const TextStyle(
+                                                                            color: Colors
+                                                                                .white,
+                                                                            fontSize:
+                                                                                20,
+                                                                            fontWeight:
+                                                                                FontWeight.w500),
+                                                                        controller:
+                                                                            descripcion,
+                                                                        obscureText:
+                                                                            false,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          border: OutlineInputBorder(
+                                                                              borderRadius: BorderRadius.circular(10),
+                                                                              borderSide: BorderSide.none),
+                                                                          filled:
+                                                                              true,
+                                                                          fillColor: Singleton().darkMode
+                                                                              ? rojoApp
+                                                                              : rojoAppDark,
+                                                                          hintText:
+                                                                              "Descripcion",
+                                                                          hintStyle: const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 20,
+                                                                              fontWeight: FontWeight.w500),
+                                                                        ),
+                                                                        onChanged:
+                                                                            (texto) {
+                                                                          setState(
+                                                                              () {
+                                                                            if (texto.trim().isEmpty) {}
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            20,
+                                                                      ),
+                                                                      RatingBar
+                                                                          .builder(
+                                                                        initialRating:
+                                                                            3,
+                                                                        minRating:
+                                                                            1,
+                                                                        direction:
+                                                                            Axis.horizontal,
+                                                                        allowHalfRating:
+                                                                            true,
+                                                                        itemCount:
+                                                                            5,
+                                                                        itemPadding: const EdgeInsets
+                                                                            .symmetric(
+                                                                            horizontal:
+                                                                                4.0),
+                                                                        itemBuilder:
+                                                                            (context, _) =>
+                                                                                const Icon(
+                                                                          Icons
+                                                                              .star,
+                                                                          color:
+                                                                              Colors.amber,
+                                                                        ),
+                                                                        onRatingUpdate:
+                                                                            (rating) {
+                                                                          print(
+                                                                              rating);
+                                                                          // calificacion =
+                                                                          //     rating;
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                      onPressed: () => Navigator.pop(
+                                                                          context,
+                                                                          "Cancelar"),
+                                                                      child:
+                                                                          Text(
+                                                                        "Cancelar",
+                                                                        style: TextStyle(
+                                                                            color: Singleton().darkMode
+                                                                                ? fontColorDark
+                                                                                : fontColorLight),
+                                                                      ),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        // nuevaUbicacion.descripcion =
+                                                                        //     descripcion.text;
+                                                                        // nuevaUbicacion.nombreUbicacion =
+                                                                        //     nombre.text;
+                                                                        // nuevaUbicacion.calificacion =
+                                                                        //     calificacion;
+                                                                        // print(
+                                                                        //     'Nueva ubicacion valores:');
+                                                                        // print(nuevaUbicacion
+                                                                        //     .nombreUbicacion);
+                                                                        // print(nuevaUbicacion
+                                                                        //     .descripcion);
+                                                                        // print(nuevaUbicacion
+                                                                        //     .calificacion);
+                                                                        // print(nuevaUbicacion
+                                                                        //     .latitud);
+                                                                        // print(nuevaUbicacion
+                                                                        //     .longitud);
+
+                                                                        // await addLugar(nuevaUbicacion)
+                                                                        //     .then(
+                                                                        //   (value) =>
+                                                                        //       {
+                                                                        //     Navigator.pop(context,
+                                                                        //         "Agregar"),
+                                                                        //     toastification.show(
+                                                                        //       context: context,
+                                                                        //       type: ToastificationType.success,
+                                                                        //       style: ToastificationStyle.flat,
+                                                                        //       title: 'Ubicación guardada',
+                                                                        //       description: 'Se ha guardado en "Mis Lugares"',
+                                                                        //       alignment: Alignment.topLeft,
+                                                                        //       autoCloseDuration: const Duration(seconds: 4),
+                                                                        //       animationBuilder: (
+                                                                        //         context,
+                                                                        //         animation,
+                                                                        //         alignment,
+                                                                        //         child,
+                                                                        //       ) {
+                                                                        //         return ScaleTransition(
+                                                                        //           scale: animation,
+                                                                        //           child: child,
+                                                                        //         );
+                                                                        //       },
+                                                                        //       borderRadius: BorderRadius.circular(12.0),
+                                                                        //       boxShadow: lowModeShadow,
+                                                                        //       showProgressBar: true,
+                                                                        //       dragToClose: true,
+                                                                        //     ),
+                                                                        //   },
+                                                                        // );
+                                                                      },
+                                                                      child: Text(
+                                                                          "Agregar",
+                                                                          style:
+                                                                              TextStyle(color: Singleton().darkMode ? fontColorDark : fontColorLight)),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            );
+                                                            // Ubicacion
+                                                            //     nuevaUbicacion =
+                                                            //     Ubicacion(
+                                                            //   calificacion: snapshot
+                                                            //               .data?[
+                                                            //           index][
+                                                            //       'calificacion'],
+                                                            //   descripcion: snapshot
+                                                            //               .data?[
+                                                            //           index][
+                                                            //       'descripcion'],
+                                                            //   nombreUbicacion:
+                                                            //       snapshot.data?[
+                                                            //               index]
+                                                            //           [
+                                                            //           'nombre_lugar'],
+                                                            // );
+                                                            // updateLugar(
+                                                            //     nuevaUbicacion,
+                                                            //     snapshot.data?[
+                                                            //             index]
+                                                            //         ['uid']);
+                                                          },
+                                                          style: TextButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                rojoApp,
+                                                            elevation: 0,
+                                                            shape:
+                                                                const RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    15),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          child: const Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Icon(
+                                                                Icons.edit,
+                                                                color:
+                                                                    fontColorLight,
+                                                              ),
+                                                              SizedBox(
+                                                                  width: 8),
+                                                              Text(
+                                                                "Editar",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      fontColorLight,
+                                                                  fontSize: 20,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  // Eliminar
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: TextButton(
+                                                          onPressed: () {
+                                                            showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  key:
+                                                                      confirmarEliminarDialogKey,
+                                                                  backgroundColor: Singleton()
+                                                                          .darkMode
+                                                                      ? bgColorLight
+                                                                      : bgColorDark,
+                                                                  content:
+                                                                      Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      // Icono de alerta
+                                                                      const Icon(
+                                                                        Icons
+                                                                            .warning,
+                                                                        size:
+                                                                            40,
+                                                                        color:
+                                                                            rojoApp,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                          height:
+                                                                              10),
+                                                                      // Texto "Estas seguro?"
+                                                                      Text(
+                                                                        "¿Estás seguro?",
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                18,
+                                                                            fontWeight: FontWeight
+                                                                                .bold,
+                                                                            color: Singleton().darkMode
+                                                                                ? fontColorDark
+                                                                                : fontColorLight),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                          height:
+                                                                              10),
+                                                                      // Texto informativo
+                                                                      Text(
+                                                                        "Esta acción es irreversible y eliminará toda la información asociada.",
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style: TextStyle(
+                                                                            color: Singleton().darkMode
+                                                                                ? fontColorDark
+                                                                                : fontColorLight),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                          height:
+                                                                              20),
+                                                                      // Boton Eliminar
+                                                                      Row(
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child:
+                                                                                TextButton(
+                                                                              onPressed: () {
+                                                                                // Agrega aquí la lógica para eliminar
+                                                                                Navigator.of(context).pop();
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                              style: TextButton.styleFrom(
+                                                                                backgroundColor: rojoApp,
+                                                                                elevation: 0,
+                                                                                shape: const RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                                                                                ),
+                                                                              ),
+                                                                              child: const Text(
+                                                                                "Eliminar",
+                                                                                style: TextStyle(
+                                                                                  color: fontColorLight,
+                                                                                  fontSize: 20,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      const SizedBox(
+                                                                          height:
+                                                                              10),
+                                                                      // Boton Cancelar
+                                                                      Row(
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child:
+                                                                                TextButton(
+                                                                              onPressed: () {
+                                                                                Navigator.of(context).pop(); // Cierra el AlertDialog
+                                                                              },
+                                                                              style: TextButton.styleFrom(
+                                                                                backgroundColor: fontColorLight,
+                                                                                elevation: 0,
+                                                                                shape: const RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                                                                                  side: BorderSide(color: grisApp),
+                                                                                ),
+                                                                              ),
+                                                                              child: const Text(
+                                                                                "Cancelar",
+                                                                                style: TextStyle(
+                                                                                  color: rojoApp,
+                                                                                  fontSize: 20,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              },
+                                                            );
+                                                          },
+                                                          style: TextButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                rojoApp,
+                                                            elevation: 0,
+                                                            shape:
+                                                                const RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    15),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          child: const Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Icon(
+                                                                Icons.delete,
+                                                                color:
+                                                                    fontColorLight,
+                                                              ),
+                                                              SizedBox(
+                                                                  width: 8),
+                                                              Text(
+                                                                "Eliminar",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      fontColorLight,
+                                                                  fontSize: 20,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         );
