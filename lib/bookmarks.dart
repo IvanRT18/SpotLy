@@ -39,6 +39,7 @@ class _BookmarkState extends State<Bookmark> {
     Ubicacion ubicacionSeleccionada = Ubicacion();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
       appBar: AppBar(
         backgroundColor: Singleton().darkMode ? bgColorLight : bgColorDark,
@@ -258,6 +259,12 @@ class _BookmarkState extends State<Bookmark> {
                                                       Expanded(
                                                         child: TextButton(
                                                           onPressed: () {
+                                                            double
+                                                                keyboardHeight =
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .viewInsets
+                                                                    .bottom;
                                                             showDialog(
                                                               context: context,
                                                               builder:
@@ -280,150 +287,139 @@ class _BookmarkState extends State<Bookmark> {
                                                                     ),
                                                                   ),
                                                                   content:
-                                                                      Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
-                                                                    children: [
-                                                                      Padding(
-                                                                        padding: const EdgeInsets
-                                                                            .only(
-                                                                            bottom:
-                                                                                10),
-                                                                        child:
-                                                                            Text(
-                                                                          'Ediat la información de la ubicación',
-                                                                          style: TextStyle(
-                                                                              fontSize: 17,
-                                                                              color: Singleton().darkMode ? fontColorDark : fontColorLight),
+                                                                      SingleChildScrollView(
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        Padding(
+                                                                          padding: const EdgeInsets
+                                                                              .only(
+                                                                              bottom: 10),
+                                                                          child:
+                                                                              Text(
+                                                                            'Editar la información de la ubicación',
+                                                                            style:
+                                                                                TextStyle(fontSize: 17, color: Singleton().darkMode ? fontColorDark : fontColorLight),
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                      //Nombre editar
-                                                                      TextFormField(
-                                                                        // initialValue:
-                                                                        //     singleton.nombreSeleccionado,
-                                                                        style: const TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                                20,
-                                                                            fontWeight:
-                                                                                FontWeight.w500),
-                                                                        controller:
-                                                                            nombre,
-                                                                        obscureText:
-                                                                            false,
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          border: OutlineInputBorder(
-                                                                              borderRadius: BorderRadius.circular(10),
-                                                                              borderSide: BorderSide.none),
-                                                                          filled:
-                                                                              true,
-                                                                          fillColor: Singleton().darkMode
-                                                                              ? rojoApp
-                                                                              : rojoAppDark,
-                                                                          hintText:
-                                                                              singleton.nombreSeleccionado,
-                                                                          hintStyle: const TextStyle(
+                                                                        //Nombre editar
+                                                                        TextFormField(
+                                                                          // initialValue:
+                                                                          //     singleton.nombreSeleccionado,
+                                                                          style: const TextStyle(
                                                                               color: Colors.white,
                                                                               fontSize: 20,
                                                                               fontWeight: FontWeight.w500),
+                                                                          controller:
+                                                                              nombre,
+                                                                          obscureText:
+                                                                              false,
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          decoration:
+                                                                              InputDecoration(
+                                                                            border:
+                                                                                OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                                                            filled:
+                                                                                true,
+                                                                            fillColor: Singleton().darkMode
+                                                                                ? rojoApp
+                                                                                : rojoAppDark,
+                                                                            hintText:
+                                                                                singleton.nombreSeleccionado,
+                                                                            hintStyle: const TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: 20,
+                                                                                fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                          onChanged:
+                                                                              (texto) {
+                                                                            setState(() {
+                                                                              if (texto.trim().isEmpty) {}
+                                                                            });
+                                                                          },
                                                                         ),
-                                                                        onChanged:
-                                                                            (texto) {
-                                                                          setState(
-                                                                              () {
-                                                                            if (texto.trim().isEmpty) {}
-                                                                          });
-                                                                        },
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      //Descipcion editar
-                                                                      TextFormField(
-                                                                        maxLines:
-                                                                            5,
-                                                                        style: const TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                                20,
-                                                                            fontWeight:
-                                                                                FontWeight.w500),
-                                                                        controller:
-                                                                            descripcion,
-                                                                        obscureText:
-                                                                            false,
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          border: OutlineInputBorder(
-                                                                              borderRadius: BorderRadius.circular(10),
-                                                                              borderSide: BorderSide.none),
-                                                                          filled:
-                                                                              true,
-                                                                          fillColor: Singleton().darkMode
-                                                                              ? rojoApp
-                                                                              : rojoAppDark,
-                                                                          hintText:
-                                                                              singleton.descripcionSeleccionado,
-                                                                          hintStyle: const TextStyle(
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              20,
+                                                                        ),
+                                                                        //Descipcion editar
+                                                                        TextFormField(
+                                                                          autovalidateMode:
+                                                                              AutovalidateMode.disabled,
+                                                                          maxLines:
+                                                                              5,
+                                                                          style: const TextStyle(
                                                                               color: Colors.white,
                                                                               fontSize: 20,
                                                                               fontWeight: FontWeight.w500),
+                                                                          controller:
+                                                                              descripcion,
+                                                                          obscureText:
+                                                                              false,
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          decoration:
+                                                                              InputDecoration(
+                                                                            border:
+                                                                                OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                                                            filled:
+                                                                                true,
+                                                                            fillColor: Singleton().darkMode
+                                                                                ? rojoApp
+                                                                                : rojoAppDark,
+                                                                            hintText:
+                                                                                singleton.descripcionSeleccionado,
+                                                                            hintStyle: const TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: 20,
+                                                                                fontWeight: FontWeight.w500),
+                                                                          ),
+                                                                          onChanged:
+                                                                              (texto) {
+                                                                            setState(() {
+                                                                              if (texto.trim().isEmpty) {}
+                                                                            });
+                                                                          },
                                                                         ),
-                                                                        onChanged:
-                                                                            (texto) {
-                                                                          setState(
-                                                                              () {
-                                                                            if (texto.trim().isEmpty) {}
-                                                                          });
-                                                                        },
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      //Estrellas editar
-                                                                      RatingBar
-                                                                          .builder(
-                                                                        initialRating:
-                                                                            singleton.calificacionSeleccionado,
-                                                                        minRating:
-                                                                            1,
-                                                                        direction:
-                                                                            Axis.horizontal,
-                                                                        allowHalfRating:
-                                                                            true,
-                                                                        itemCount:
-                                                                            5,
-                                                                        itemPadding: const EdgeInsets
-                                                                            .symmetric(
-                                                                            horizontal:
-                                                                                4.0),
-                                                                        itemBuilder:
-                                                                            (context, _) =>
-                                                                                const Icon(
-                                                                          Icons
-                                                                              .star,
-                                                                          color:
-                                                                              Colors.amber,
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              20,
                                                                         ),
-                                                                        onRatingUpdate:
-                                                                            (rating) {
-                                                                          print(
-                                                                              rating);
-                                                                          nuevaCalificacion =
-                                                                              rating;
-                                                                        },
-                                                                      ),
-                                                                    ],
+                                                                        //Estrellas editar
+                                                                        RatingBar
+                                                                            .builder(
+                                                                          initialRating:
+                                                                              singleton.calificacionSeleccionado,
+                                                                          minRating:
+                                                                              1,
+                                                                          direction:
+                                                                              Axis.horizontal,
+                                                                          allowHalfRating:
+                                                                              true,
+                                                                          itemCount:
+                                                                              5,
+                                                                          itemPadding: const EdgeInsets
+                                                                              .symmetric(
+                                                                              horizontal: 4.0),
+                                                                          itemBuilder: (context, _) =>
+                                                                              const Icon(
+                                                                            Icons.star,
+                                                                            color:
+                                                                                Colors.amber,
+                                                                          ),
+                                                                          onRatingUpdate:
+                                                                              (rating) {
+                                                                            print(rating);
+                                                                            nuevaCalificacion =
+                                                                                rating;
+                                                                          },
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                   //AlertDialog editar opciones/acciones
                                                                   actions: [

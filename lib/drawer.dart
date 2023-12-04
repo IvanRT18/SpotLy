@@ -35,112 +35,112 @@ class _DrawerAppState extends State<DrawerApp> {
           bottomRight: Radius.circular(25),
         ),
       ),
-      child: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 70),
-                  child: Image(
-                    image: AssetImage(Singleton().darkMode
-                        ? 'assets/images/spotlyLogo_.png'
-                        : 'assets/images/spotlyLogo_darkmode.png'),
-                    width: 120,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 70),
+                    child: Image(
+                      image: AssetImage(Singleton().darkMode
+                          ? 'assets/images/spotlyLogo_.png'
+                          : 'assets/images/spotlyLogo_darkmode.png'),
+                      width: 120,
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Scaffold.of(context).closeDrawer();
-                  },
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 60,
+                  IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).closeDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 60,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * .75,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                ListTile(
-                  leading: Icon(Icons.home, size: listIconSize),
-                  iconColor: Colors.white,
-                  title: Text(
-                    'Inicio',
-                    style: listItemStyle,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .75,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
                   ),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Mapa(),
-                    ));
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                ListTile(
-                  leading: Icon(Icons.bookmark, size: listIconSize),
-                  iconColor: Colors.white,
-                  title: Text('Mis Lugares', style: listItemStyle),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Bookmark(),
-                    ));
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                ListTile(
-                  leading: Icon(Icons.settings, size: listIconSize),
-                  iconColor: Colors.white,
-                  title: Text('Ajustes', style: listItemStyle),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Ajustes(),
-                    ));
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut().then((value) => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Login(),
-                              ))
-                        });
-                  },
-                  icon: const Icon(
-                    Icons.logout_sharp,
-                    color: Colors.white,
-                    size: 60,
+                  ListTile(
+                    leading: Icon(Icons.home, size: listIconSize),
+                    iconColor: Colors.white,
+                    title: Text(
+                      'Inicio',
+                      style: listItemStyle,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const Mapa(),
+                      ));
+                    },
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.bookmark, size: listIconSize),
+                    iconColor: Colors.white,
+                    title: Text('Mis Lugares', style: listItemStyle),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const Bookmark(),
+                      ));
+                    },
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.settings, size: listIconSize),
+                    iconColor: Colors.white,
+                    title: Text('Ajustes', style: listItemStyle),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const Ajustes(),
+                      ));
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut().then((value) => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Login(),
+                                ))
+                          });
+                    },
+                    icon: const Icon(
+                      Icons.logout_sharp,
+                      color: Colors.white,
+                      size: 60,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -31,18 +31,6 @@ class _MapaState extends State<Mapa> {
 
   List<Marker> _marker = [];
   List<Marker> _list = [];
-  // List<Marker> _list = [
-  //   Marker(
-  //       markerId: MarkerId("1"),
-  //       position: LatLng(22.144695795592572, -101.0163329857406),
-  //       infoWindow: InfoWindow(
-  //         title: 'Titulo',
-  //       )),
-  //   Marker(
-  //     markerId: MarkerId("2"),
-  //     position: LatLng(23.144695795592572, -101.0163329857406),
-  //   ),
-  // ];
 
   @override
   void initState() {
@@ -149,277 +137,283 @@ class _MapaState extends State<Mapa> {
         ],
       ),
       drawer: const DrawerApp(),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: widthDevice,
-          height: heightDevice - appbarHeight,
-          child: Column(
-            children: [
-              SizedBox(
-                width: widthDevice * 7,
-                height: heightDevice * 0.8,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 16, 24, 10),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                        bottomLeft: Radius.circular(30),
-                      ),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        heightFactor: heightDevice * 0.6,
-                        widthFactor: widthDevice * 0.7,
-                        child: GoogleMap(
-                          onMapCreated: _onMapCreated,
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                          //Posicion inicial del mapa
-                          initialCameraPosition: CameraPosition(
-                            target: _center,
-                            zoom: 14.5,
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          return SingleChildScrollView(
+            child: SizedBox(
+              height: orientation == Orientation.portrait
+                  ? heightDevice - appbarHeight
+                  : widthDevice - appbarHeight,
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: widthDevice * 7,
+                    height: heightDevice * 0.8,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 16, 24, 10),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                            bottomLeft: Radius.circular(30),
                           ),
-                          markers: Set<Marker>.of(_marker),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            heightFactor: heightDevice * 0.6,
+                            widthFactor: widthDevice * 0.7,
+                            child: GoogleMap(
+                              onMapCreated: _onMapCreated,
+                              myLocationButtonEnabled: true,
+                              myLocationEnabled: true,
+                              //Posicion inicial del mapa
+                              initialCameraPosition: CameraPosition(
+                                target: _center,
+                                zoom: 14.5,
+                              ),
+                              markers: Set<Marker>.of(_marker),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
-                      ),
-                      onPressed: () {
-                        getCurretLocation().then(
-                          (localizacionActual) {
-                            nuevaUbicacion.latitud =
-                                localizacionActual.latitude;
-                            nuevaUbicacion.longitud =
-                                localizacionActual.longitude;
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                        ),
+                        onPressed: () {
+                          getCurretLocation().then(
+                            (localizacionActual) {
+                              nuevaUbicacion.latitud =
+                                  localizacionActual.latitude;
+                              nuevaUbicacion.longitud =
+                                  localizacionActual.longitude;
 
-                            showDialog<String>(
-                              context: context,
-                              builder: (context) => SingleChildScrollView(
-                                child: AlertDialog(
-                                  backgroundColor: Singleton().darkMode
-                                      ? bgColorLight
-                                      : bgColorDark,
-                                  title: Text(
-                                    "Agregar ubicación",
-                                    style: TextStyle(
-                                      color: Singleton().darkMode
-                                          ? fontColorDark
-                                          : fontColorLight,
+                              showDialog<String>(
+                                context: context,
+                                builder: (context) => SingleChildScrollView(
+                                  child: AlertDialog(
+                                    backgroundColor: Singleton().darkMode
+                                        ? bgColorLight
+                                        : bgColorDark,
+                                    title: Text(
+                                      "Agregar ubicación",
+                                      style: TextStyle(
+                                        color: Singleton().darkMode
+                                            ? fontColorDark
+                                            : fontColorLight,
+                                      ),
                                     ),
-                                  ),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Text(
+                                            'Escribe la información de la nueva ubicación',
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                color: Singleton().darkMode
+                                                    ? fontColorDark
+                                                    : fontColorLight),
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                          controller: nombre,
+                                          obscureText: false,
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: BorderSide.none),
+                                            filled: true,
+                                            fillColor: Singleton().darkMode
+                                                ? rojoApp
+                                                : rojoAppDark,
+                                            hintText: "Nombre",
+                                            hintStyle: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          onChanged: (texto) {
+                                            setState(() {
+                                              if (texto.trim().isEmpty) {}
+                                            });
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          maxLines: 5,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                          controller: descripcion,
+                                          obscureText: false,
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: BorderSide.none),
+                                            filled: true,
+                                            fillColor: Singleton().darkMode
+                                                ? rojoApp
+                                                : rojoAppDark,
+                                            hintText: "Descripcion",
+                                            hintStyle: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          onChanged: (texto) {
+                                            setState(() {
+                                              if (texto.trim().isEmpty) {}
+                                            });
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        RatingBar.builder(
+                                          initialRating: 3,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: true,
+                                          itemCount: 5,
+                                          itemPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 4.0),
+                                          itemBuilder: (context, _) =>
+                                              const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            print(rating);
+                                            calificacion = rating;
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, "Cancelar"),
                                         child: Text(
-                                          'Escribe la información de la nueva ubicación',
+                                          "Cancelar",
                                           style: TextStyle(
-                                              fontSize: 17,
                                               color: Singleton().darkMode
                                                   ? fontColorDark
                                                   : fontColorLight),
                                         ),
                                       ),
-                                      TextFormField(
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
-                                        controller: nombre,
-                                        obscureText: false,
-                                        textAlign: TextAlign.center,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
-                                          filled: true,
-                                          fillColor: Singleton().darkMode
-                                              ? rojoApp
-                                              : rojoAppDark,
-                                          hintText: "Nombre",
-                                          hintStyle: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        onChanged: (texto) {
-                                          setState(() {
-                                            if (texto.trim().isEmpty) {}
-                                          });
+                                      TextButton(
+                                        onPressed: () async {
+                                          nuevaUbicacion.descripcion =
+                                              descripcion.text;
+                                          nuevaUbicacion.nombreUbicacion =
+                                              nombre.text;
+                                          nuevaUbicacion.calificacion =
+                                              calificacion;
+                                          print('Nueva ubicacion valores:');
+                                          print(nuevaUbicacion.nombreUbicacion);
+                                          print(nuevaUbicacion.descripcion);
+                                          print(nuevaUbicacion.calificacion);
+                                          print(nuevaUbicacion.latitud);
+                                          print(nuevaUbicacion.longitud);
+
+                                          await addLugar(nuevaUbicacion).then(
+                                            (value) => {
+                                              Navigator.pop(context, "Agregar"),
+                                              toastification.show(
+                                                context: context,
+                                                type:
+                                                    ToastificationType.success,
+                                                style: ToastificationStyle.flat,
+                                                title: 'Ubicación guardada',
+                                                description:
+                                                    'Se ha guardado en "Mis Lugares"',
+                                                alignment: Alignment.topLeft,
+                                                autoCloseDuration:
+                                                    const Duration(seconds: 4),
+                                                animationBuilder: (
+                                                  context,
+                                                  animation,
+                                                  alignment,
+                                                  child,
+                                                ) {
+                                                  return ScaleTransition(
+                                                    scale: animation,
+                                                    child: child,
+                                                  );
+                                                },
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                                boxShadow: lowModeShadow,
+                                                showProgressBar: true,
+                                                dragToClose: true,
+                                              ),
+                                            },
+                                          );
                                         },
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      TextFormField(
-                                        maxLines: 5,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
-                                        controller: descripcion,
-                                        obscureText: false,
-                                        textAlign: TextAlign.center,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
-                                          filled: true,
-                                          fillColor: Singleton().darkMode
-                                              ? rojoApp
-                                              : rojoAppDark,
-                                          hintText: "Descripcion",
-                                          hintStyle: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        onChanged: (texto) {
-                                          setState(() {
-                                            if (texto.trim().isEmpty) {}
-                                          });
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      RatingBar.builder(
-                                        initialRating: 3,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        itemPadding: const EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                          calificacion = rating;
-                                        },
+                                        child: Text("Agregar",
+                                            style: TextStyle(
+                                                color: Singleton().darkMode
+                                                    ? fontColorDark
+                                                    : fontColorLight)),
                                       ),
                                     ],
                                   ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, "Cancelar"),
-                                      child: Text(
-                                        "Cancelar",
-                                        style: TextStyle(
-                                            color: Singleton().darkMode
-                                                ? fontColorDark
-                                                : fontColorLight),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        nuevaUbicacion.descripcion =
-                                            descripcion.text;
-                                        nuevaUbicacion.nombreUbicacion =
-                                            nombre.text;
-                                        nuevaUbicacion.calificacion =
-                                            calificacion;
-                                        print('Nueva ubicacion valores:');
-                                        print(nuevaUbicacion.nombreUbicacion);
-                                        print(nuevaUbicacion.descripcion);
-                                        print(nuevaUbicacion.calificacion);
-                                        print(nuevaUbicacion.latitud);
-                                        print(nuevaUbicacion.longitud);
-
-                                        await addLugar(nuevaUbicacion).then(
-                                          (value) => {
-                                            Navigator.pop(context, "Agregar"),
-                                            toastification.show(
-                                              context: context,
-                                              type: ToastificationType.success,
-                                              style: ToastificationStyle.flat,
-                                              title: 'Ubicación guardada',
-                                              description:
-                                                  'Se ha guardado en "Mis Lugares"',
-                                              alignment: Alignment.topLeft,
-                                              autoCloseDuration:
-                                                  const Duration(seconds: 4),
-                                              animationBuilder: (
-                                                context,
-                                                animation,
-                                                alignment,
-                                                child,
-                                              ) {
-                                                return ScaleTransition(
-                                                  scale: animation,
-                                                  child: child,
-                                                );
-                                              },
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                              boxShadow: lowModeShadow,
-                                              showProgressBar: true,
-                                              dragToClose: true,
-                                            ),
-                                          },
-                                        );
-                                      },
-                                      child: Text("Agregar",
-                                          style: TextStyle(
-                                              color: Singleton().darkMode
-                                                  ? fontColorDark
-                                                  : fontColorLight)),
-                                    ),
-                                  ],
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.solidHeart,
-                            size: 35,
-                            color: rojoApp,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Guardar ubicación",
-                            style: TextStyle(
-                                color: rojoApp,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                              );
+                            },
+                          );
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.solidHeart,
+                              size: 35,
+                              color: rojoApp,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Guardar ubicación",
+                              style: TextStyle(
+                                  color: rojoApp,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
