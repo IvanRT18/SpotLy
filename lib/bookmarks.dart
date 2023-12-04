@@ -458,6 +458,9 @@ class _BookmarkState extends State<Bookmark> {
                                                                           Navigator.pop(
                                                                               context,
                                                                               "Agregar");
+                                                                          Navigator.pop(
+                                                                              context,
+                                                                              "Agregar");
 
                                                                           toastification
                                                                               .show(
@@ -500,56 +503,6 @@ class _BookmarkState extends State<Bookmark> {
 
                                                                         setState(
                                                                             () {});
-                                                                        // nuevaUbicacion.descripcion =
-                                                                        //     descripcion.text;
-                                                                        // nuevaUbicacion.nombreUbicacion =
-                                                                        //     nombre.text;
-                                                                        // nuevaUbicacion.calificacion =
-                                                                        //     calificacion;
-                                                                        // print(
-                                                                        //     'Nueva ubicacion valores:');
-                                                                        // print(nuevaUbicacion
-                                                                        //     .nombreUbicacion);
-                                                                        // print(nuevaUbicacion
-                                                                        //     .descripcion);
-                                                                        // print(nuevaUbicacion
-                                                                        //     .calificacion);
-                                                                        // print(nuevaUbicacion
-                                                                        //     .latitud);
-                                                                        // print(nuevaUbicacion
-                                                                        //     .longitud);
-
-                                                                        // await addLugar(nuevaUbicacion)
-                                                                        //     .then(
-                                                                        //   (value) =>
-                                                                        //       {
-
-                                                                        //     toastification.show(
-                                                                        //       context: context,
-                                                                        //       type: ToastificationType.success,
-                                                                        //       style: ToastificationStyle.flat,
-                                                                        //       title: 'Ubicación guardada',
-                                                                        //       description: 'Se ha guardado en "Mis Lugares"',
-                                                                        //       alignment: Alignment.topLeft,
-                                                                        //       autoCloseDuration: const Duration(seconds: 4),
-                                                                        //       animationBuilder: (
-                                                                        //         context,
-                                                                        //         animation,
-                                                                        //         alignment,
-                                                                        //         child,
-                                                                        //       ) {
-                                                                        //         return ScaleTransition(
-                                                                        //           scale: animation,
-                                                                        //           child: child,
-                                                                        //         );
-                                                                        //       },
-                                                                        //       borderRadius: BorderRadius.circular(12.0),
-                                                                        //       boxShadow: lowModeShadow,
-                                                                        //       showProgressBar: true,
-                                                                        //       dragToClose: true,
-                                                                        //     ),
-                                                                        //   },
-                                                                        // );
                                                                       },
                                                                       child: Text(
                                                                           "Agregar",
@@ -560,23 +513,6 @@ class _BookmarkState extends State<Bookmark> {
                                                                 );
                                                               },
                                                             );
-                                                            // Ubicacion
-                                                            //     nuevaUbicacion =
-                                                            //     Ubicacion(
-                                                            //   calificacion: snapshot
-                                                            //               .data?[
-                                                            //           index][
-                                                            //       'calificacion'],
-                                                            //   descripcion: snapshot
-                                                            //               .data?[
-                                                            //           index][
-                                                            //       'descripcion'],
-                                                            //   nombreUbicacion:
-                                                            //       snapshot.data?[
-                                                            //               index]
-                                                            //           [
-                                                            //           'nombre_lugar'],
-                                                            // );
                                                           },
                                                           style: TextButton
                                                               .styleFrom(
@@ -691,10 +627,39 @@ class _BookmarkState extends State<Bookmark> {
                                                                           Expanded(
                                                                             child:
                                                                                 TextButton(
-                                                                              onPressed: () {
+                                                                              onPressed: () async {
                                                                                 // Agrega aquí la lógica para eliminar
-                                                                                Navigator.of(context).pop();
-                                                                                Navigator.of(context).pop();
+                                                                                await deleteLugar(singleton.idSeleccionado).then((value) {
+                                                                                  Navigator.of(context).pop();
+                                                                                  Navigator.of(context).pop();
+
+                                                                                  setState(() {});
+
+                                                                                  toastification.show(
+                                                                                    context: context,
+                                                                                    type: ToastificationType.success,
+                                                                                    style: ToastificationStyle.flat,
+                                                                                    title: 'Ubicación eliminada',
+                                                                                    description: 'Se ha eliminado la ubicacion',
+                                                                                    alignment: Alignment.topLeft,
+                                                                                    autoCloseDuration: const Duration(seconds: 4),
+                                                                                    animationBuilder: (
+                                                                                      context,
+                                                                                      animation,
+                                                                                      alignment,
+                                                                                      child,
+                                                                                    ) {
+                                                                                      return ScaleTransition(
+                                                                                        scale: animation,
+                                                                                        child: child,
+                                                                                      );
+                                                                                    },
+                                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                                    boxShadow: lowModeShadow,
+                                                                                    showProgressBar: true,
+                                                                                    dragToClose: true,
+                                                                                  );
+                                                                                });
                                                                               },
                                                                               style: TextButton.styleFrom(
                                                                                 backgroundColor: rojoApp,

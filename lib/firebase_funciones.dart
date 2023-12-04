@@ -83,3 +83,8 @@ Future<void> updateLugar(
   });
   // print("Termino la funcion actualizar");
 }
+
+//Eliminar un lugar de la base de datos
+Future<void> deleteLugar(String id) async {
+  await db.collection('Localizacion').doc(id).delete();
+}
