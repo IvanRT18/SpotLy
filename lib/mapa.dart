@@ -29,8 +29,61 @@ class _MapaState extends State<Mapa> {
 
   late Ubicacion nuevaUbicacion = Ubicacion();
 
+  List<Marker> _marker = [];
+  List<Marker> _list = [];
+  // List<Marker> _list = [
+  //   Marker(
+  //       markerId: MarkerId("1"),
+  //       position: LatLng(22.144695795592572, -101.0163329857406),
+  //       infoWindow: InfoWindow(
+  //         title: 'Titulo',
+  //       )),
+  //   Marker(
+  //     markerId: MarkerId("2"),
+  //     position: LatLng(23.144695795592572, -101.0163329857406),
+  //   ),
+  // ];
+
+  @override
+  void initState() {
+    getMarkers();
+    super.initState();
+  }
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  Future getMarkers() async {
+    getLugares().then(
+      (Localizaciones) {
+        for (var Localizacion in Localizaciones) {
+          print("DENTRO DE INIT");
+          // print(Localizacion['uid']);
+          // print(Localizacion['latitud']);
+          print(Localizacion['nombre_lugar']);
+
+          _list.add(
+            new Marker(
+              markerId: MarkerId(Localizacion['uid']),
+              position:
+                  LatLng(Localizacion['latitud'], Localizacion['longitud']),
+              infoWindow: InfoWindow(
+                title: Localizacion['nombre_lugar'],
+              ),
+            ),
+          );
+
+          // print(_list.length);
+        }
+        _marker.addAll(_list);
+        print("MARKER");
+        print(_marker);
+        setState(() {});
+      },
+    );
+
+    // return _marker;
   }
 
   //Obtiene las coordenadas de la ubicación del dispositivo
@@ -128,12 +181,7 @@ class _MapaState extends State<Mapa> {
                             target: _center,
                             zoom: 14.5,
                           ),
-                          markers: {
-                            Marker(
-                              markerId: const MarkerId("Posicion"),
-                              position: _center,
-                            ),
-                          },
+                          markers: Set<Marker>.of(_marker),
                         ),
                       ),
                     ),

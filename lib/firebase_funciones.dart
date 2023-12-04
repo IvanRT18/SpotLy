@@ -41,8 +41,8 @@ Future<List> getLugares() async {
 
   queryLocalizaciones.docs.forEach((location) {
     final data = location.data() as Map<String, dynamic>;
-    print("IDDDDDDDDDD");
-    print(location.id);
+    // print("IDDDDDDDDDD");
+    // print(location.id);
     final localizacion = {
       "nombre_lugar": data['nombre_lugar'],
       "descripcion": data['descripcion'],
