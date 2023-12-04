@@ -30,6 +30,7 @@ class _BookmarkState extends State<Bookmark> {
   Widget build(BuildContext context) {
     TextEditingController nombre = TextEditingController();
     TextEditingController descripcion = TextEditingController();
+    double nuevaCalificacion = 0;
 
     final double widthDevice = MediaQuery.of(context).size.width;
     final double heightDevice = MediaQuery.of(context).size.height;
@@ -81,8 +82,6 @@ class _BookmarkState extends State<Bookmark> {
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
                     itemBuilder: (BuildContext context, int index) {
-                      print("Calificacion mis lugares");
-                      print(snapshot.data?[index]['calificacion']);
                       return Card(
                         color: Singleton().darkMode ? rojoApp : rojoAppDark,
                         margin: const EdgeInsets.only(
@@ -162,6 +161,7 @@ class _BookmarkState extends State<Bookmark> {
                                   ],
                                 ),
                               ),
+                              //Icono 3 puntos
                               Expanded(
                                 flex: 1,
                                 child: Column(
@@ -214,6 +214,7 @@ class _BookmarkState extends State<Bookmark> {
                                         showDialog<String>(
                                           context: context,
                                           builder: (context) =>
+                                              //Alert dialog opciones editar/eliminar
                                               SingleChildScrollView(
                                             child: AlertDialog(
                                               key: opcionesDialogKey,
@@ -262,13 +263,14 @@ class _BookmarkState extends State<Bookmark> {
                                                               builder:
                                                                   (BuildContext
                                                                       context) {
+                                                                //AlertDialog de Editar
                                                                 return AlertDialog(
                                                                   backgroundColor: Singleton()
                                                                           .darkMode
                                                                       ? bgColorLight
                                                                       : bgColorDark,
                                                                   title: Text(
-                                                                    "Agregar ubicación",
+                                                                    "Editar ubicación",
                                                                     style:
                                                                         TextStyle(
                                                                       color: Singleton()
@@ -290,12 +292,13 @@ class _BookmarkState extends State<Bookmark> {
                                                                                 10),
                                                                         child:
                                                                             Text(
-                                                                          'Escribe la información de la nueva ubicación',
+                                                                          'Ediat la información de la ubicación',
                                                                           style: TextStyle(
                                                                               fontSize: 17,
                                                                               color: Singleton().darkMode ? fontColorDark : fontColorLight),
                                                                         ),
                                                                       ),
+                                                                      //Nombre editar
                                                                       TextFormField(
                                                                         // initialValue:
                                                                         //     singleton.nombreSeleccionado,
@@ -341,6 +344,7 @@ class _BookmarkState extends State<Bookmark> {
                                                                         height:
                                                                             20,
                                                                       ),
+                                                                      //Descipcion editar
                                                                       TextFormField(
                                                                         maxLines:
                                                                             5,
@@ -386,6 +390,7 @@ class _BookmarkState extends State<Bookmark> {
                                                                         height:
                                                                             20,
                                                                       ),
+                                                                      //Estrellas editar
                                                                       RatingBar
                                                                           .builder(
                                                                         initialRating:
@@ -414,12 +419,13 @@ class _BookmarkState extends State<Bookmark> {
                                                                             (rating) {
                                                                           print(
                                                                               rating);
-                                                                          // calificacion =
-                                                                          //     rating;
+                                                                          nuevaCalificacion =
+                                                                              rating;
                                                                         },
                                                                       ),
                                                                     ],
                                                                   ),
+                                                                  //AlertDialog editar opciones/acciones
                                                                   actions: [
                                                                     TextButton(
                                                                       onPressed: () => Navigator.pop(
@@ -437,6 +443,63 @@ class _BookmarkState extends State<Bookmark> {
                                                                     TextButton(
                                                                       onPressed:
                                                                           () async {
+                                                                        print(
+                                                                            "Dentro de actualizar");
+                                                                        print(singleton
+                                                                            .idSeleccionado);
+                                                                        await updateLugar(
+                                                                                singleton.idSeleccionado,
+                                                                                nombre.text,
+                                                                                descripcion.text,
+                                                                                nuevaCalificacion)
+                                                                            .then((value) {
+                                                                          print(
+                                                                              "Dentro de actualizar otra vez");
+                                                                          Navigator.pop(
+                                                                              context,
+                                                                              "Agregar");
+
+                                                                          toastification
+                                                                              .show(
+                                                                            context:
+                                                                                context,
+                                                                            type:
+                                                                                ToastificationType.success,
+                                                                            style:
+                                                                                ToastificationStyle.flat,
+                                                                            title:
+                                                                                'Ubicación actualizada',
+                                                                            description:
+                                                                                'Se ha actulizado en "Mis Lugares"',
+                                                                            alignment:
+                                                                                Alignment.topLeft,
+                                                                            autoCloseDuration:
+                                                                                const Duration(seconds: 4),
+                                                                            animationBuilder:
+                                                                                (
+                                                                              context,
+                                                                              animation,
+                                                                              alignment,
+                                                                              child,
+                                                                            ) {
+                                                                              return ScaleTransition(
+                                                                                scale: animation,
+                                                                                child: child,
+                                                                              );
+                                                                            },
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(12.0),
+                                                                            boxShadow:
+                                                                                lowModeShadow,
+                                                                            showProgressBar:
+                                                                                true,
+                                                                            dragToClose:
+                                                                                true,
+                                                                          );
+                                                                        });
+
+                                                                        setState(
+                                                                            () {});
                                                                         // nuevaUbicacion.descripcion =
                                                                         //     descripcion.text;
                                                                         // nuevaUbicacion.nombreUbicacion =
@@ -460,8 +523,7 @@ class _BookmarkState extends State<Bookmark> {
                                                                         //     .then(
                                                                         //   (value) =>
                                                                         //       {
-                                                                        //     Navigator.pop(context,
-                                                                        //         "Agregar"),
+
                                                                         //     toastification.show(
                                                                         //       context: context,
                                                                         //       type: ToastificationType.success,
@@ -515,11 +577,6 @@ class _BookmarkState extends State<Bookmark> {
                                                             //           [
                                                             //           'nombre_lugar'],
                                                             // );
-                                                            // updateLugar(
-                                                            //     nuevaUbicacion,
-                                                            //     snapshot.data?[
-                                                            //             index]
-                                                            //         ['uid']);
                                                           },
                                                           style: TextButton
                                                               .styleFrom(

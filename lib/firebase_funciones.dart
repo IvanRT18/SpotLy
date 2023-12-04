@@ -2,9 +2,10 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proyecto_movil/models/ubicacion.dart';
+import 'package:proyecto_movil/utils/singleton.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
-
+Singleton singleton = Singleton();
 //Obtiene todos los usuarios de la base de datos
 Future<List> getUsuarios() async {
   List usuarios = [];
@@ -69,6 +70,16 @@ Future<void> addLugar(Ubicacion localizacion) async {
 }
 
 //Actualiza un lugar en la base de datos
-Future<void> updateLugar(Ubicacion localizacion, String id) async {
-  // await db.collection('Localizacion').doc(localizacion.)
+Future<void> updateLugar(
+    String id, String newName, String newDesc, double newCal) async {
+  // print("Dentro de la funcion actualizar");
+  // print(id);
+  await db.collection('Localizacion').doc(id).set({
+    "nombre_lugar": newName,
+    "descripcion": newDesc,
+    "calificacion": newCal,
+    "latitud": singleton.latSeleccionado,
+    "longitud": singleton.longSeleccionado,
+  });
+  // print("Termino la funcion actualizar");
 }
